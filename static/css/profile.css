@@ -1,0 +1,39 @@
+.profile-header {
+    background-color: #ffffff;
+    width: 1000px;
+    padding: 0 16px;
+    margin: 10px auto;
+    align-items: center;
+}
+
+.profile-main {
+    height: 108px;
+    display: flex;
+}
+
+.profile-avatar {
+    height: 100px;
+    width: 100px;
+    border: 4px solid orangered;
+    border-radius: 8px;
+}
+
+.profile-content {
+    margin-left: 10px;
+    height: 100px;
+    padding: 4px;
+}
+
+.profile-content ul {
+    list-style-type: none;
+}
+
+.profile-content li {
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.nickname {
+    font-size: 18px;
+    font-weight: 400;
+}

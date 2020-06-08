@@ -9,8 +9,18 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("templates/index.html")
-	t.Execute(w, nil)
+	session, err := checkSession(w, r)
+	t, _ := template.ParseFiles("templates/index.html", "templates/packageHeader.html")
+	if err != nil {
+		user := data.User{
+			Nickname: "Reverie",
+			Uid:      1,
+		}
+		t.Execute(w, user)
+	} else {
+		user := session.User()
+		t.Execute(w, user)
+	}
 }
 
 func signup(w http.ResponseWriter, r *http.Request) {

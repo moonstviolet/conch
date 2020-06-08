@@ -1,8 +1,11 @@
 package main
 
 import (
+	"conch/data"
 	"encoding/json"
+	"errors"
 	"log"
+	"net/http"
 	"os"
 )
 
@@ -47,4 +50,15 @@ func danger(args ...interface{}) {
 func warning(args ...interface{}) {
 	logger.SetPrefix("WARNING ")
 	logger.Println(args...)
+}
+
+func checkSession(w http.ResponseWriter, r *http.Request) (session data.Session, err error) {
+	cookie, err := r.Cookie("session")
+	if err == nil {
+		session = data.Session{Sid: cookie.Value}
+		if !session.Check() {
+			err = errors.New("Invalid session")
+		}
+	}
+	return
 }

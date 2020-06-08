@@ -4,43 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="static/css/header.css">
+    <title>Conch</title>
 </head>
 
 <body>
-    <div class="header">
-        <div class="header-inner">
-            <a href="" class="header-logo">
-                Conch
-            </a>
-            <ul class="header-tabs">
-                <li class="tabs-item">
-                    <a href="" class="tabs-link">首页</a>
-                </li>
-                <li class="tabs-item">
-                    <a href="" class="tabs-link">发现</a>
-                </li>
-                <li class="tabs-item">
-                    <a href="" class="tabs-link">等你来答</a>
-                </li>
-            </ul>
-            <div class="search-bar">
-                <form class="serach-box" action="https://www.baidu.com" method="GET">
-                    <label class="input-wrapper">
-                        <input type="text" maxlength="100" placeholder="你为什么不问问神奇海螺呢" class="input-box">
-                    </label>
-                </form>
-                <button type="button" class="ask-button button">提问</button>
-            </div>
-            <div class="header-user">
-                <div class="profile-area">
-                    <buton type="button" class="login-button button">登录</buton>
-                    <buton type="button" class="register-button button">加入Conch</buton>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{template "header" .}}
 </body>
 
 </html>
