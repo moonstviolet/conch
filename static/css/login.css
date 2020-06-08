@@ -1,0 +1,48 @@
+body {
+    height: 100vh;
+    background-image: url("/static/images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login-content {
+    display: flex;
+    justify-content: center;
+}
+
+.login-inner {
+    margin-top: 100px;
+    width: 352px;
+    padding: 24px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.login-input {
+    display: block;
+    width: 352px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ebebeb;
+    line-height: 24px;
+    font-size: 15px;
+}
+
+.login-form {
+    margin: 24px 0;
+}
+
+.login-form button {
+    width: 320px;
+    height: 34px;
+    margin: 24px 16px;
+    background-color: orangered;
+    color: #ffffff;
+    border-color: orangered;
+}
+
+.login-inner a {
+    text-decoration: none;
+    color: orangered;
+}

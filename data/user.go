@@ -2,6 +2,8 @@ package data
 
 import (
 	"context"
+	"errors"
+	"net/http"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,7 +13,7 @@ import (
 type User struct {
 	Uuid     primitive.ObjectID `json:"uuid" bson:"_id"`
 	Uid      int                `json:"uid" bson:"uid"`
-	Username string             `json:"username" bson:"useranme"`
+	Username string             `json:"username" bson:"username"`
 	Password string             `json:"password" bson:"password"`
 	Nickname string             `json:"nickname" bson:"nickname"`
 }
@@ -40,12 +42,44 @@ func UserDeleteAll() (err error) {
 	return
 }
 
-func (s *Session) Check() (valid bool) {
+func UserByUsername(name string) (user User, err error) {
+	userColl := db.Collection("users")
+	fliter := bson.M{
+		"username": name,
+	}
+	res := userColl.FindOne(context.TODO(), fliter)
+	res.Decode(&user)
+	if err == nil && user.Uid == 0 {
+		err = errors.New("Can find user")
+	}
+	return
+}
+
+func (user *User) CreateSession() (session Session, err error) {
 	sessionColl := db.Collection("sessions")
-	res := sessionColl.FindOne(context.TODO(), s)
-	var t Session
-	res.Decode(&t)
-	return s.Sid == t.Sid && s.Uid == t.Uid
+	session = Session{
+		Sid:        createUUID(),
+		Uid:        user.Uid,
+		CreateTime: time.Now(),
+	}
+	_, err = sessionColl.InsertOne(context.TODO(), session)
+	return
+}
+
+func CheckSession(w http.ResponseWriter, r *http.Request) (s Session, err error) {
+	cookie, err := r.Cookie("session")
+	if err == nil {
+		sessionColl := db.Collection("sessions")
+		fliter := bson.M{
+			"_id": cookie.Value,
+		}
+		res := sessionColl.FindOne(context.TODO(), fliter)
+		err = res.Decode(&s)
+		if err == nil && s.Sid == "" {
+			err = errors.New("Invalid session")
+		}
+	}
+	return
 }
 
 func (s *Session) User() (user User) {

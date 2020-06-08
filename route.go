@@ -9,17 +9,45 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	session, err := checkSession(w, r)
-	t, _ := template.ParseFiles("templates/index.html", "templates/packageHeader.html")
+	session, err := data.CheckSession(w, r)
+	t, _ := template.ParseFiles("templates/index.html", "templates/lib/header.html")
 	if err != nil {
-		user := data.User{
-			Nickname: "Reverie",
-			Uid:      1,
-		}
-		t.Execute(w, user)
+		t.Execute(w, nil)
 	} else {
 		user := session.User()
 		t.Execute(w, user)
+	}
+}
+
+func login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		err := r.ParseForm()
+
+		user, err := data.UserByUsername(r.PostFormValue("username"))
+		if err != nil || user.Password != r.PostFormValue("password") {
+			// TODO: 最好能提示用户名或密码错误
+			http.Redirect(w, r, "login", http.StatusFound)
+		} else {
+			session, err := user.CreateSession()
+			if err != nil {
+				danger(err, "Cannot create session")
+			}
+			cookie := http.Cookie{
+				Name:     "session",
+				Value:    session.Sid,
+				HttpOnly: true,
+			}
+			http.SetCookie(w, &cookie)
+			info(user.Username, "log in")
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
+	} else {
+		if _, err := data.CheckSession(w, r); err != nil {
+			t, _ := template.ParseFiles("templates/login.html", "templates/lib/header.html")
+			t.Execute(w, nil)
+		} else {
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
 	}
 }
 
@@ -43,7 +71,6 @@ func signupAccount(w http.ResponseWriter, r *http.Request) {
 	if err := user.Create(); err != nil {
 		danger(err)
 	} else {
-		info("signup succeed")
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
 }
