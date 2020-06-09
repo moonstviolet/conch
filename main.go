@@ -14,7 +14,6 @@ func main() {
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/login", login)
 	mux.HandleFunc("/signup", signup)
-	mux.HandleFunc("/signupAccount", signupAccount)
 	server := http.Server{
 		Addr:    config.Address,
 		Handler: mux,
