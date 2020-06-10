@@ -16,6 +16,7 @@ type User struct {
 	Username string             `json:"username" bson:"username"`
 	Password string             `json:"password" bson:"password"`
 	Nickname string             `json:"nickname" bson:"nickname"`
+	Motto    string             `json:"motto" bson:"motto"`
 }
 
 type Session struct {

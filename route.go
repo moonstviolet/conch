@@ -38,7 +38,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 				HttpOnly: true,
 			}
 			http.SetCookie(w, &cookie)
-			info(user.Username, "log in")
+			info("user", user.Username, "login")
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 	} else {
@@ -54,24 +54,23 @@ func login(w http.ResponseWriter, r *http.Request) {
 func signup(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
-
-		user, err := data.UserByUsername(r.PostFormValue("username"))
-		if err != nil || user.Password != r.PostFormValue("password") {
-			// TODO: 最好能提示用户名或密码错误
-			http.Redirect(w, r, "login", http.StatusFound)
+		if err != nil {
+			danger(err)
+		}
+		user := data.User{
+			Uuid:     primitive.NewObjectID(),
+			Uid:      data.AutoIncrement("users"),
+			Username: r.PostFormValue("username"),
+			Password: r.PostFormValue("password"),
+			Nickname: r.PostFormValue("nickname"),
+			Motto:    r.PostFormValue("motto"),
+		}
+		if err := user.Create(); err != nil {
+			danger(err)
 		} else {
-			session, err := user.CreateSession()
-			if err != nil {
-				danger(err, "Cannot create session")
-			}
-			cookie := http.Cookie{
-				Name:     "session",
-				Value:    session.Sid,
-				HttpOnly: true,
-			}
-			http.SetCookie(w, &cookie)
-			info(user.Username, "log in")
-			http.Redirect(w, r, "/", http.StatusFound)
+			// TODO: 最好能提示注册成功
+			info("user", user.Username, "signup")
+			http.Redirect(w, r, "login", http.StatusFound)
 		}
 	} else {
 		if _, err := data.CheckSession(w, r); err != nil {
@@ -80,24 +79,5 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		} else {
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
-	}
-}
-
-func signupAccount(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		danger(err)
-	}
-	user := data.User{
-		Uuid:     primitive.NewObjectID(),
-		Uid:      data.AutoIncrement("users"),
-		Username: r.PostFormValue("username"),
-		Password: r.PostFormValue("password"),
-		Nickname: r.PostFormValue("nickname"),
-	}
-	if err := user.Create(); err != nil {
-		danger(err)
-	} else {
-		http.Redirect(w, r, "/", http.StatusFound)
 	}
 }
