@@ -1,10 +1,7 @@
 package main
 
 import (
-	"conch/data"
 	"net/http"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func main() {
@@ -14,20 +11,10 @@ func main() {
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/login", login)
 	mux.HandleFunc("/signup", signup)
+	mux.HandleFunc("/finduser", finduser)
 	server := http.Server{
 		Addr:    config.Address,
 		Handler: mux,
 	}
 	server.ListenAndServe()
-}
-
-func test() {
-	user := data.User{
-		Uuid:     primitive.NewObjectID(),
-		Uid:      data.AutoIncrement("user"),
-		Username: "moonstviolet",
-		Password: "violet2943",
-		Nickname: "Reverie",
-	}
-	user.Create()
 }

@@ -1,0 +1,89 @@
+.question-header {
+    min-width: 1032px;
+    padding: 16px 0;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, .1);
+    overflow: hidden;
+}
+
+.question-content {
+    width: 1000px;
+    padding: 0 16px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.question-main {
+    width: 694px;
+    padding-left: 20px;
+}
+
+.question-header-title {
+    margin: 12px 0 4px 0;
+    font-size: 22px;
+    line-height: 32px;
+    font-weight: 600;
+}
+
+.question-header-detail {
+    margin: 8px 0;
+    font-size: 15px;
+    line-height: 25px;
+}
+
+.question-header-side {
+    width: 296px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+.question-follow-status {
+    width: 200px;
+    margin-left: auto;
+    margin-top: 12px;
+    display: flex;
+}
+
+.question-follow-item {
+    padding: 0 8px;
+    width: 100px;
+    text-align: center;
+}
+
+.question-follow-itemname {
+    font-size: 14px;
+    color: #8590a6;
+}
+
+.question-follow-itemvalue {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.question-pageviews {
+    border-left: 1px solid #ebebeb;
+}
+
+.question-footer {
+    width: 1000px;
+    margin: 4px auto 0 auto;
+    padding: 0 16px 0 16px;
+}
+
+.question-footer-inner {
+    padding-left: 20px;
+    display: flex;
+}
+
+.follow-button {
+    margin-right: 8px;
+    color: #ffffff;
+    background-color: orangered;
+    border-color: orangered;
+}
+
+.answer-button {
+    margin: 0 8px;
+    color:orangered;
+    border-color: orangered;
+}

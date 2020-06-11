@@ -10,7 +10,11 @@ import (
 
 func index(w http.ResponseWriter, r *http.Request) {
 	session, err := data.CheckSession(w, r)
-	t, _ := template.ParseFiles("templates/index.html", "templates/lib/header.html")
+	t, _ := template.ParseFiles(
+		"templates/index.html",
+		"templates/lib/header.html",
+		"templates/lib/question.html",
+	)
 	if err != nil {
 		t.Execute(w, nil)
 	} else {
@@ -79,5 +83,14 @@ func signup(w http.ResponseWriter, r *http.Request) {
 		} else {
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
+	}
+}
+
+func finduser(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	if _, err := data.UserByUsername(query["username"][0]); err != nil {
+		w.Write([]byte("true"))
+	} else {
+		w.Write([]byte("false"))
 	}
 }
