@@ -4,8 +4,6 @@ import (
 	"conch/data"
 	"net/http"
 	"text/template"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -14,6 +12,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		"templates/index.html",
 		"templates/lib/header.html",
 		"templates/lib/question.html",
+		"templates/lib/question-flow.html",
 	)
 	if err != nil {
 		t.Execute(w, nil)
@@ -62,7 +61,6 @@ func signup(w http.ResponseWriter, r *http.Request) {
 			danger(err)
 		}
 		user := data.User{
-			Uuid:     primitive.NewObjectID(),
 			Uid:      data.AutoIncrement("users"),
 			Username: r.PostFormValue("username"),
 			Password: r.PostFormValue("password"),
@@ -92,5 +90,14 @@ func finduser(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("true"))
 	} else {
 		w.Write([]byte("false"))
+	}
+}
+
+func ask(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+
+	} else {
+		t, _ := template.ParseFiles("templates/ask.html", "templates/lib/header.html")
+		t.Execute(w, nil)
 	}
 }

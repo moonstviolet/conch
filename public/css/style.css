@@ -21,3 +21,17 @@ body {
     text-align: center;
     outline: none;
 }
+
+.orangered-button {
+    color: #ffffff;
+    background-color: orangered;
+    border-color: orangered;
+}
+
+.button:hover {
+    background-color: purple;
+}
+
+.button:active {
+    filter: brightness(0.75);
+}

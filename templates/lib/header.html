@@ -21,7 +21,7 @@
                     <input type="text" maxlength="100" placeholder="你为什么不问问神奇海螺呢" class="input-box">
                 </label>
             </form>
-            <button type="button" class="ask-button button">提问</button>
+            <button type="button" class="ask-button button orangered-button" onclick="ask()">提问</button>
         </div>
 
         {{if .}}
@@ -38,7 +38,7 @@
         <div class="header-user">
             <div class="profile-area">
                 <buton type="button" class="login-button button" onclick="login()">登录</buton>
-                <buton type="button" class="signup-button button" onclick="signup()">加入Conch</buton>
+                <buton type="button" class="button orangered-button" onclick="signup()">加入Conch</buton>
             </div>
         </div>
         {{end}}

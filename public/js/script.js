@@ -20,3 +20,7 @@ function validateForm(thisform) {
     }
     return true;
 }
+
+function ask() {
+    window.location.href = "ask";
+}

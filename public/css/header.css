@@ -79,18 +79,7 @@
     border: none;
 }
 
-.button:hover {
-    background-color: purple;
-}
-
-.button:active {
-    filter: brightness(0.75);
-}
-
 .ask-button {
-    color: #ffffff;
-    background-color: orangered;
-    border-color: orangered;
     margin-left: 16px;
 }
 
@@ -133,10 +122,4 @@
     color: orangered;
     border-color: orangered;
     margin-right: 16px;
-}
-
-.signup-button {
-    color: #ffffff;
-    background-color: orangered;
-    border-color: orangered;
 }

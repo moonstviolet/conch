@@ -5,23 +5,22 @@ body {
     background-size: cover;
 }
 
-.login-content {
+.signup-content {
     display: flex;
     justify-content: center;
 }
 
-.login-inner {
+.signup-inner {
     margin-top: 100px;
-    width: 352px;
     padding: 24px;
     background-color: #ffffff;
     text-align: center;
 }
 
-.login-input {
-    display: block;
+.signup-input {
     width: 352px;
     height: 48px;
+    padding-left: 16px;
     outline: none;
     border: none;
     border-bottom: 1px solid #ebebeb;
@@ -29,20 +28,22 @@ body {
     font-size: 15px;
 }
 
-.login-form {
+.signup-form {
     margin: 24px 0;
 }
 
-.login-form button {
+.signup-form button {
     width: 320px;
     height: 34px;
     margin: 24px 16px;
-    background-color: orangered;
-    color: #ffffff;
-    border-color: orangered;
 }
 
-.login-inner a {
-    text-decoration: none;
-    color: orangered;
+.signup-form span {
+    display: inline-block;
+    width: 80px;
+    text-align: left;
+}
+
+.agreement {
+    color: #808080;
 }

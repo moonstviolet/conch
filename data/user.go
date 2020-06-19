@@ -7,16 +7,14 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Uuid     primitive.ObjectID `json:"uuid" bson:"_id"`
-	Uid      int                `json:"uid" bson:"uid"`
-	Username string             `json:"username" bson:"username"`
-	Password string             `json:"password" bson:"password"`
-	Nickname string             `json:"nickname" bson:"nickname"`
-	Motto    string             `json:"motto" bson:"motto"`
+	Uid      int    `json:"uid" bson:"_id"`
+	Username string `json:"username" bson:"username"`
+	Password string `json:"password" bson:"password"`
+	Nickname string `json:"nickname" bson:"nickname"`
+	Motto    string `json:"motto" bson:"motto"`
 }
 
 type Session struct {
