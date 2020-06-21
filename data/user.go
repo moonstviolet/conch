@@ -13,6 +13,7 @@ type User struct {
 	Uid      int    `json:"uid" bson:"_id"`
 	Username string `json:"username" bson:"username"`
 	Password string `json:"password" bson:"password"`
+	Email    string `json:"email" bson:"email"`
 	Nickname string `json:"nickname" bson:"nickname"`
 	Motto    string `json:"motto" bson:"motto"`
 }
@@ -65,7 +66,7 @@ func (user *User) CreateSession() (session Session, err error) {
 	return
 }
 
-func CheckSession(w http.ResponseWriter, r *http.Request) (s Session, err error) {
+func CheckSession(r *http.Request) (s Session, err error) {
 	cookie, err := r.Cookie("session")
 	if err == nil {
 		sessionColl := db.Collection("sessions")
@@ -84,9 +85,18 @@ func CheckSession(w http.ResponseWriter, r *http.Request) (s Session, err error)
 func (s *Session) User() (user User) {
 	userColl := db.Collection("users")
 	fliter := bson.M{
-		"uid": s.Uid,
+		"_id": s.Uid,
 	}
 	res := userColl.FindOne(context.TODO(), fliter)
 	res.Decode(&user)
+	return
+}
+
+func (s *Session) DeleteBySid() (err error) {
+	sessionColl := db.Collection("sessions")
+	fliter := bson.M{
+		"_id": s.Sid,
+	}
+	_, err = sessionColl.DeleteOne(context.TODO(), fliter)
 	return
 }

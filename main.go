@@ -9,10 +9,16 @@ func main() {
 	files := http.FileServer(http.Dir(config.Static))
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
 	mux.HandleFunc("/", index)
+
 	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/logout", logout)
 	mux.HandleFunc("/signup", signup)
-	mux.HandleFunc("/finduser", finduser)
-	mux.HandleFunc("/ask", ask)
+	mux.HandleFunc("/user/find", findUser)
+	mux.HandleFunc("/user/avatar", avatar)
+
+	mux.HandleFunc("/question/new", newQuestion)
+	mux.HandleFunc("/question/read", readQuestion)
+
 	server := http.Server{
 		Addr:    config.Address,
 		Handler: mux,

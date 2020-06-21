@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
-    <link rel="stylesheet" type="text/css" href="static/css/header.css">
-    <link rel="stylesheet" type="text/css" href="static/css/signup.css">
-    <script type="text/javascript" src="static/js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/signup.css">
+    <script type="text/javascript" src="/static/js/script.js"></script>
     <title>Signup - Conch</title>
 </head>
 
@@ -33,6 +33,12 @@
                     <span>确认密码</span>
                     <input type="password" name="password2" class="signup-input" required="required"
                         placeholder="确认密码" pattern="^[a-zA-Z0-9_]{6,20}$" title="6至20位大小写字母、数字和下划线"
+                    >
+                </div>
+                <div>
+                    <span>邮箱</span>
+                    <input type="email" name="email" class="signup-input" required="required"
+                        placeholder="你的常用邮箱"
                     >
                 </div>
                 <div>

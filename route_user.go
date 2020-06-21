@@ -2,30 +2,16 @@ package main
 
 import (
 	"conch/data"
+	"crypto/md5"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"text/template"
 )
 
-func index(w http.ResponseWriter, r *http.Request) {
-	session, err := data.CheckSession(w, r)
-	t, _ := template.ParseFiles(
-		"templates/index.html",
-		"templates/lib/header.html",
-		"templates/lib/question.html",
-		"templates/lib/question-flow.html",
-	)
-	if err != nil {
-		t.Execute(w, nil)
-	} else {
-		user := session.User()
-		t.Execute(w, user)
-	}
-}
-
 func login(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
-
 		user, err := data.UserByUsername(r.PostFormValue("username"))
 		if err != nil || user.Password != r.PostFormValue("password") {
 			// TODO: 最好能提示用户名或密码错误
@@ -39,19 +25,31 @@ func login(w http.ResponseWriter, r *http.Request) {
 				Name:     "session",
 				Value:    session.Sid,
 				HttpOnly: true,
+				MaxAge:   1200,
 			}
 			http.SetCookie(w, &cookie)
 			info("user", user.Username, "login")
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 	} else {
-		if _, err := data.CheckSession(w, r); err != nil {
+		if _, err := data.CheckSession(r); err != nil {
 			t, _ := template.ParseFiles("templates/login.html", "templates/lib/header.html")
 			t.Execute(w, nil)
 		} else {
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 	}
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("session")
+	if err != http.ErrNoCookie {
+		session := data.Session{
+			Sid: cookie.Value,
+		}
+		session.DeleteBySid()
+	}
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func signup(w http.ResponseWriter, r *http.Request) {
@@ -64,6 +62,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 			Uid:      data.AutoIncrement("users"),
 			Username: r.PostFormValue("username"),
 			Password: r.PostFormValue("password"),
+			Email:    r.PostFormValue("email"),
 			Nickname: r.PostFormValue("nickname"),
 			Motto:    r.PostFormValue("motto"),
 		}
@@ -75,7 +74,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "login", http.StatusFound)
 		}
 	} else {
-		if _, err := data.CheckSession(w, r); err != nil {
+		if _, err := data.CheckSession(r); err != nil {
 			t, _ := template.ParseFiles("templates/signup.html", "templates/lib/header.html")
 			t.Execute(w, nil)
 		} else {
@@ -84,20 +83,52 @@ func signup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func finduser(w http.ResponseWriter, r *http.Request) {
+func findUser(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	if _, err := data.UserByUsername(query["username"][0]); err != nil {
-		w.Write([]byte("true"))
+		b, _ := json.Marshal(struct {
+			IsValid bool `json:"isValid"`
+		}{
+			IsValid: true,
+		})
+		w.Write(b)
 	} else {
-		w.Write([]byte("false"))
+		b, _ := json.Marshal(struct {
+			IsValid bool `json:"isValid"`
+		}{
+			IsValid: false,
+		})
+		w.Write(b)
 	}
 }
 
-func ask(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-
+func avatar(w http.ResponseWriter, r *http.Request) {
+	if session, err := data.CheckSession(r); err != nil {
+		w.Write([]byte("/static/images/avatar.jpg"))
 	} else {
-		t, _ := template.ParseFiles("templates/ask.html", "templates/lib/header.html")
-		t.Execute(w, nil)
+		email := session.User().Email
+		s := fmt.Sprintf("%x", md5.Sum([]byte(email)))
+		http.Redirect(w, r, "https://www.gravatar.com/avatar/"+s, http.StatusFound)
+	}
+}
+
+func test(w http.ResponseWriter, r *http.Request) {
+	if session, err := data.CheckSession(r); err != nil {
+		b, _ := json.Marshal(struct {
+			EmailHash string `json:"emailHash"`
+		}{
+			EmailHash: "error",
+		})
+		w.Write(b)
+	} else {
+		email := session.User().Email
+		s := fmt.Sprintf("%x", md5.Sum([]byte(email)))
+		b, _ := json.Marshal(struct {
+			EmailHash string `json:"emailHash"`
+		}{
+			EmailHash: s,
+		})
+		info(s)
+		w.Write(b)
 	}
 }

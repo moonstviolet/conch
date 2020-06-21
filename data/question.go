@@ -14,24 +14,24 @@ type Question struct {
 	Title    string    `json:"title" bson:"title"`
 	Detail   string    `json:"detail" bson:"detail"`
 	Follow   int       `json:"follow" bson:"follow"`
-	Pageview int       `json:"pageview" bson:"lastmod"`
-	Lastmod  time.Time `json:"lastmod" bson:"follow"`
+	Pageview int       `json:"pageview" bson:"pageview"`
+	Lastmod  time.Time `json:"lastmod" bson:"lastmod"`
 }
 
-func (question *Question) Create() (err error) {
+func (q *Question) Create() (err error) {
 	questionColl := db.Collection("questions")
-	_, err = questionColl.InsertOne(context.TODO(), question)
+	_, err = questionColl.InsertOne(context.TODO(), q)
 	return
 }
 
-func QuestionById(id int) (question Question, err error) {
+func QuestionById(id int) (q Question, err error) {
 	questionColl := db.Collection("questions")
 	fliter := bson.M{
 		"_id": id,
 	}
 	res := questionColl.FindOne(context.TODO(), fliter)
-	res.Decode(&question)
-	if err == nil && question.Qid == 0 {
+	res.Decode(&q)
+	if err == nil && q.Qid == 0 {
 		err = errors.New("Can find question")
 	}
 	return

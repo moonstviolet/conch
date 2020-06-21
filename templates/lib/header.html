@@ -1,7 +1,7 @@
 {{define "header"}}
 <div class="header">
     <div class="header-inner">
-        <a href="" class="header-logo">
+        <a href="/" class="header-logo">
             Conch
         </a>
         <ul class="header-tabs">
@@ -21,24 +21,24 @@
                     <input type="text" maxlength="100" placeholder="你为什么不问问神奇海螺呢" class="input-box">
                 </label>
             </form>
-            <button type="button" class="ask-button button orangered-button" onclick="ask()">提问</button>
+            <button type="button" class="ask-button button orangered-button" onclick="newQuestion()">提问</button>
         </div>
 
         {{if .}}
         <div class="header-user">
             <div class="profile-area">
-                <img height="30" width="30" src="static/images/avatar.jpg">
+                <img height="30" width="30" src="/user/avatar">
                 <div class="profile-menu">
                     <a href="" class="menu-item">我的主页</a>
-                    <a href="" class="menu-item">退出登录</a>
+                    <a href="/logout" class="menu-item">退出登录</a>
                 </div>
             </div>
         </div>
         {{else}}
         <div class="header-user">
             <div class="profile-area">
-                <buton type="button" class="login-button button" onclick="login()">登录</buton>
-                <buton type="button" class="button orangered-button" onclick="signup()">加入Conch</buton>
+                <buton type="button" class="login-button button" onclick="window.location.href = '/login';">登录</buton>
+                <buton type="button" class="button orangered-button" onclick="window.location.href = '/signup';">加入Conch</buton>
             </div>
         </div>
         {{end}}
