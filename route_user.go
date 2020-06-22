@@ -2,9 +2,7 @@ package main
 
 import (
 	"conch/data"
-	"crypto/md5"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -25,7 +23,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 				Name:     "session",
 				Value:    session.Sid,
 				HttpOnly: true,
-				MaxAge:   1200,
+				MaxAge:   3600,
 			}
 			http.SetCookie(w, &cookie)
 			info("user", user.Username, "login")
@@ -66,6 +64,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 			Nickname: r.PostFormValue("nickname"),
 			Motto:    r.PostFormValue("motto"),
 		}
+		user.EmailHash()
 		if err := user.Create(); err != nil {
 			danger(err)
 		} else {
@@ -102,33 +101,13 @@ func findUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func avatar(w http.ResponseWriter, r *http.Request) {
-	if session, err := data.CheckSession(r); err != nil {
-		w.Write([]byte("/static/images/avatar.jpg"))
+func profile(w http.ResponseWriter, r *http.Request) {
+	session, err := data.CheckSession(r)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusFound)
 	} else {
-		email := session.User().Email
-		s := fmt.Sprintf("%x", md5.Sum([]byte(email)))
-		http.Redirect(w, r, "https://www.gravatar.com/avatar/"+s, http.StatusFound)
-	}
-}
-
-func test(w http.ResponseWriter, r *http.Request) {
-	if session, err := data.CheckSession(r); err != nil {
-		b, _ := json.Marshal(struct {
-			EmailHash string `json:"emailHash"`
-		}{
-			EmailHash: "error",
-		})
-		w.Write(b)
-	} else {
-		email := session.User().Email
-		s := fmt.Sprintf("%x", md5.Sum([]byte(email)))
-		b, _ := json.Marshal(struct {
-			EmailHash string `json:"emailHash"`
-		}{
-			EmailHash: s,
-		})
-		info(s)
-		w.Write(b)
+		user := session.User()
+		t, _ := template.ParseFiles("templates/user-profile.html", "templates/lib/header.html")
+		t.Execute(w, user)
 	}
 }

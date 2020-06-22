@@ -46,9 +46,10 @@ func AutoIncrement(name string) int {
 			log.Fatalln(err)
 		}
 	} else {
+		res.Count++
 		update := bson.M{
-			"$inc": bson.M{
-				"count": 1,
+			"$set": bson.M{
+				"count": res.Count,
 			},
 		}
 		_, err := counters.UpdateOne(context.TODO(), fliter, update)

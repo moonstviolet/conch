@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/user-profile.css">
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
+    <title>{{.Nickname}} - Conch</title>
+    </style>
+</head>
+
+<body>
+    {{template "header" .}}
+    <div class="profile-header">
+        <div class="profile-main">
+            <div class="profile-avatar">
+                <img height="100" width="100" src="{{.Avatar}}">
+            </div>
+            <div class="profile-content">
+                <ul>
+                    <li class="nickname">{{.Nickname}}</li>
+                    <li>Uid: {{.Uid}}</li>
+                    <li>{{.Motto}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+
+</html>

@@ -1,2 +1,7 @@
-INFO 2020/06/21 22:25:43 utils.go:39: user moonstviolet login
-INFO 2020/06/21 23:02:08 utils.go:39: user moonstviolet login
+INFO 2020/06/22 13:46:32 utils.go:39: user moonstviolet signup
+INFO 2020/06/22 13:46:37 utils.go:39: user moonstviolet login
+INFO 2020/06/22 13:46:44 utils.go:39: {1 1 司空君为什么这么可爱？ <p>如题。</p>   1 1 2020-06-22 13:46:44.0626215 +0800 CST m=+49.220294701}
+INFO 2020/06/22 13:46:51 utils.go:39: {2 1 如何成为一个像司空君这样优秀的人？ <p>如题。</p>   1 1 2020-06-22 13:46:51.9407839 +0800 CST m=+57.098457101}
+INFO 2020/06/22 14:04:03 utils.go:39: user moonstviolet signup
+INFO 2020/06/22 14:04:08 utils.go:39: user moonstviolet login
+WARNING 2020/06/22 14:05:53 utils.go:49: <nil>

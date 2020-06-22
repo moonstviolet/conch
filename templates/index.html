@@ -15,21 +15,22 @@
 </head>
 
 <body>
-    {{template "header" .U}}
+    {{template "header" .User}}
     <div class="content">
         <div class="main">
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
-            {{template "question-flow" .Q}}
+            <div class="top-tabs-wrapper">
+                <ul class="top-tabs">
+                    <li><a href="">推荐</a></li>
+                    <li><a href="">关注(施工中)</a></li>
+                    <li><a href="">热榜(施工中)</a></li>
+                </ul>
+            </div>
+            {{range .QList}}
+                {{template "question-flow" .}}
+            {{end}}
         </div>
         <div class="sidebar">
-            <h2>施工中</h2>
+            <h2>侧边栏施工中</h2>
         </div>
     </div>
 </body>

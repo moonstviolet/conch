@@ -13,7 +13,7 @@
     </style>
 </head>
 
-<body>
+<body body onLoad="javascript:document.yourFormName.reset()">
     {{template "header" .}}
     <div class="ask-content">
         <form class="ask-inner" action="/question/new" method="POST" onsubmit="postQuestion()">

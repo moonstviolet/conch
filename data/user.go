@@ -2,7 +2,9 @@ package data
 
 import (
 	"context"
+	"crypto/md5"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -14,6 +16,7 @@ type User struct {
 	Username string `json:"username" bson:"username"`
 	Password string `json:"password" bson:"password"`
 	Email    string `json:"email" bson:"email"`
+	Avatar   string `json:"avatar" bson:"avatar"`
 	Nickname string `json:"nickname" bson:"nickname"`
 	Motto    string `json:"motto" bson:"motto"`
 }
@@ -53,6 +56,11 @@ func UserByUsername(name string) (user User, err error) {
 		err = errors.New("Can find user")
 	}
 	return
+}
+
+func (user *User) EmailHash() {
+	s := fmt.Sprintf("%x", md5.Sum([]byte(user.Email)))
+	user.Avatar = "https://www.gravatar.com/avatar/" + s
 }
 
 func (user *User) CreateSession() (session Session, err error) {

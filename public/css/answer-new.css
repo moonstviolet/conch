@@ -5,16 +5,22 @@ body {
     background-size: cover;
 }
 
-.ask-content {
+.answer-content {
     display: flex;
     justify-content: center;
 }
 
-.ask-inner {
+.answer-inner {
     margin-top: 100px;
     padding: 24px;
     background-color: #ffffff;
     text-align: center;
+}
+
+.question-title {
+    text-align: left;
+    margin: 24px auto;
+    padding-left: 16px;
 }
 
 .detail-placeholder {
@@ -22,19 +28,6 @@ body {
     text-align: left;
     padding-left: 16px;
     margin-bottom: 10px;
-}
-
-.title-input {
-    width: 709px;
-    height: 48px;
-    margin: 24px auto;
-    padding-left: 16px;
-    line-height: 24px;
-    font-size: 15px;
-
-    outline: none;
-    border: 1px solid #ebebeb;
-    border-radius: 4px;
 }
 
 .detail-input {

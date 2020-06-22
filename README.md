@@ -12,7 +12,13 @@ A question-and-answer website
   * 问题，关联题主
 * **answers** 
   * 答案，关联答主和归属问题
-* **questionsfollow**
+* **qfollow**
   * **users** 和 **questions** 的映射
-* **usersfollow**
+* **ufllow**
   * **users** 和 **users** 的映射
+
+db.counters.remove({})
+db.users.remove({})
+db.sessions.remove({})
+db.questions.remove({})
+db.answers.remove({})

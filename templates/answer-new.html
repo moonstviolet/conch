@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/answer-new.css">
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
+    <title>Conch</title>
+    </style>
+</head>
+
+<body>
+    {{template "header" .U}}
+    <div class="answer-content">
+        <form class="answer-inner" action="/answer/new?qid={{.Q.Qid}}" method="POST" onsubmit="postAnswer()">
+            <h2>回答</h2>
+            <h3 class="question-title">{{.Q.Title}}</h3>
+            <input type="text" name="answerDetail" style="display: none;">
+            <p class="detail-placeholder">请在此写下你的回答</p>
+            <div id="toolbar"></div>
+            <div id="text" class="detail-input"></div>
+            <button type="submit" class="publish-button button orangered-button"">发布回答</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        var e = window.wangEditor;
+        var editor = new e('#toolbar', '#text');
+        editor.create();
+        function postAnswer() {
+            var detail = document.getElementsByName("answerDetail")[0];
+            detail.value=editor.txt.html();
+            return true;
+        }
+    </script>
+</body>
+
+</html>

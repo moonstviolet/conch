@@ -4,3 +4,20 @@
     padding: 10px;
     border-bottom: 1px solid #f0f2f7;
 }
+
+.question-flow a {
+    text-decoration: none;
+    color: #1a1a1a;
+}
+
+.question-flow-title {
+    margin-top: 10px;
+}
+
+.question-flow-detail {
+    display: block;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow : hidden;
+    text-overflow: ellipsis;
+}

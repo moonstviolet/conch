@@ -1,8 +1,11 @@
 {{define "question-flow"}}
     <div class="question-flow">
-        <h3>{{.Title}}</h3>
-        <div>
-            {{.Detail}}
-        </div>
+        <h2><a href="\question\read?qid={{.Qid}}">{{.Title}}</a></h2>
+        {{if .Modify}}
+            <h3 class="question-flow-title">{{.ModUser}}</h3>
+            <a href="\question\read?qid={{.Qid}}" class="text-editor question-flow-detail">{{.Modify}}</a>
+        {{else}}
+            <p class="text-editor question-flow-detail">这个问题尚未有人回答，你要来试一下么？</p>
+        {{end}}
     </div>
 {{end}}

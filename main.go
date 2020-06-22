@@ -14,10 +14,12 @@ func main() {
 	mux.HandleFunc("/logout", logout)
 	mux.HandleFunc("/signup", signup)
 	mux.HandleFunc("/user/find", findUser)
-	mux.HandleFunc("/user/avatar", avatar)
+	mux.HandleFunc("/user/profile", profile)
 
 	mux.HandleFunc("/question/new", newQuestion)
 	mux.HandleFunc("/question/read", readQuestion)
+
+	mux.HandleFunc("/answer/new", newAnswer)
 
 	server := http.Server{
 		Addr:    config.Address,

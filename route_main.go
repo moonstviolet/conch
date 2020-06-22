@@ -21,16 +21,22 @@ func index(w http.ResponseWriter, r *http.Request) {
 		"templates/lib/question-flow.html",
 	)
 	if err != nil {
-		t.Execute(w, nil)
+		qlist, _ := data.QuestionList()
+		t.Execute(w, struct {
+			User  data.User
+			QList []data.Question
+		}{
+			QList: qlist,
+		})
 	} else {
 		user := session.User()
-		question, _ := data.QuestionById(18)
+		qlist, _ := data.QuestionList()
 		t.Execute(w, struct {
-			U data.User
-			Q data.Question
+			User  data.User
+			QList []data.Question
 		}{
-			U: user,
-			Q: question,
+			User:  user,
+			QList: qlist,
 		})
 	}
 }

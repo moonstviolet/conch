@@ -9,31 +9,40 @@
                 <a href="/" class="tabs-link">首页</a>
             </li>
             <li class="tabs-item">
-                <a href="" class="tabs-link">发现</a>
+                <a href="" class="tabs-link">施工中</a>
             </li>
             <li class="tabs-item">
-                <a href="" class="tabs-link">等你来答</a>
+                <a href="" class="tabs-link">施工中</a>
             </li>
         </ul>
         <div class="search-bar">
             <form class="serach-box">
                 <label class="input-wrapper">
-                    <input type="text" maxlength="100" placeholder="你为什么不问问神奇海螺呢" class="input-box">
+                    <input type="text" maxlength="100" placeholder="你为什么不问问神奇海螺呢（搜索功能施工中）" class="input-box">
                 </label>
             </form>
             <button type="button" class="ask-button button orangered-button" onclick="newQuestion()">提问</button>
         </div>
 
         {{if .}}
-        <div class="header-user">
-            <div class="profile-area">
-                <img height="30" width="30" src="/user/avatar">
-                <div class="profile-menu">
-                    <a href="" class="menu-item">我的主页</a>
-                    <a href="/logout" class="menu-item">退出登录</a>
+            {{if ne .Uid 0}}
+            <div class="header-user">
+                <div class="profile-area">
+                    <img height="30" width="30" src="{{.Avatar}}">
+                    <div class="profile-menu">
+                        <a href="/user/profile" class="menu-item">我的主页</a>
+                        <a href="/logout" class="menu-item">退出登录</a>
+                    </div>
                 </div>
             </div>
-        </div>
+            {{else}}
+            <div class="header-user">
+                <div class="profile-area">
+                    <buton type="button" class="login-button button" onclick="window.location.href = '/login';">登录</buton>
+                    <buton type="button" class="button orangered-button" onclick="window.location.href = '/signup';">加入Conch</buton>
+                </div>
+            </div>
+            {{end}}
         {{else}}
         <div class="header-user">
             <div class="profile-area">

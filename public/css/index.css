@@ -16,6 +16,23 @@
     border-radius: 2px;
 }
 
+.top-tabs-wrapper {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f0f2f7;
+}
+
+.top-tabs a {
+    text-decoration: none;
+}
+
+.top-tabs li {
+    display: inline-block;
+    margin: 0 22px;
+    font-size: 16px;
+}
+
 .sidebar {
     box-sizing: border-box;
     background-color: #ffffff;
