@@ -23,6 +23,12 @@ db.sessions.remove({})
 db.questions.remove({})
 db.answers.remove({})
 
+db.createCollection("counters")
+db.createCollection("users")
+db.createCollection("sessions")
+db.createCollection("questions")
+db.createCollection("answers")
+
 如何评价武汉工程大学计算机科学与工程学院刘一麟同学机试满分保研浙大？
 他为什么这么强啊？
 
