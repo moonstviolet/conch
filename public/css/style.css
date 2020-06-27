@@ -85,3 +85,21 @@ body {
 .text-editor ol {
     margin: 10px 0 10px 20px;
 }
+
+.app-main {
+    display: flex;
+    min-width: 1000px;
+    width: 1000px;
+    padding: 0 16px;
+    margin: 10px auto;
+    align-items: flex-start;
+}
+
+.main-left {
+    box-sizing: border-box;
+    background-color: #ffffff;
+    margin-right: 10px;
+    width: 694px;
+    border: 1px solid #f0f2f7;
+    border-radius: 2px;
+}

@@ -50,18 +50,25 @@ func readQuestion(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	qid, _ := strconv.Atoi(query["qid"][0])
 	question, _ := data.QuestionById(qid)
+
+	answers, _ := data.AnswersByQid(qid)
+
+	session, _ := data.CheckSession(r)
+	user := session.User()
 	t, _ := template.ParseFiles(
 		"templates/question-read.html",
 		"templates/lib/header.html",
-		"templates/lib/question-profile.html",
+		"templates/lib/question-header.html",
+		"templates/lib/answer-flow.html",
 	)
-	session, _ := data.CheckSession(r)
-	user := session.User()
+	info(answers)
 	t.Execute(w, struct {
-		U data.User
-		Q data.Question
+		LoginUser  data.User
+		Question   data.Question
+		AnswerList []data.Answer
 	}{
-		U: user,
-		Q: question,
+		LoginUser:  user,
+		Question:   question,
+		AnswerList: answers,
 	})
 }

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/question-profile.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/question-header.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/answer-flow.css">
     <script type="text/javascript" src="/static/js/script.js"></script>
     <script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
     <title>Conch</title>
@@ -14,8 +15,15 @@
 </head>
 
 <body>
-    {{template "header" .U}}
-    {{template "question-profile" .Q}}
+    {{template "header" .LoginUser}}
+    {{template "question-header" .Question}}
+    <div class="app-main">
+        <div class="main-left">
+            {{range .AnswerList}}
+                {{template "answer-flow" .}}
+            {{end}}
+        </div>
+    </div>
 </body>
 
 </html>

@@ -38,11 +38,12 @@ func newAnswer(w http.ResponseWriter, r *http.Request) {
 			question, _ := data.QuestionById(qid)
 
 			answer := data.Answer{
-				Aid:     data.AutoIncrement("answers"),
-				Qid:     question.Qid,
-				Uid:     user.Uid,
-				Detail:  r.PostFormValue("answerDetail"),
-				Lastmod: time.Now(),
+				Aid:      data.AutoIncrement("answers"),
+				Qid:      question.Qid,
+				Uid:      user.Uid,
+				Username: user.Nickname,
+				Detail:   r.PostFormValue("answerDetail"),
+				Lastmod:  time.Now(),
 			}
 			answer.Create()
 			question.ModUser = user.Nickname
