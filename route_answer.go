@@ -48,7 +48,7 @@ func newAnswer(w http.ResponseWriter, r *http.Request) {
 			answer.Create()
 			question.ModUser = user.Nickname
 			question.Modify = answer.Detail
-			question.Lastmod = time.Now()
+			question.Lastmod = answer.Lastmod
 			err := question.Update()
 			warning(err)
 			http.Redirect(w, r, "/question/read?qid="+strconv.Itoa(question.Qid), http.StatusFound)

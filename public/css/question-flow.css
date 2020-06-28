@@ -16,7 +16,7 @@
 
 .question-flow-detail {
     display: block;
-    margin-top: 10px;
+    margin: 10px 0;
+    max-height: 40px;
     overflow : hidden;
-    text-overflow: ellipsis;
 }

@@ -7,5 +7,6 @@
         {{else}}
             <p class="text-editor question-flow-detail">这个问题尚未有人回答，你要来试一下么？</p>
         {{end}}
+        <span>{{.Lastmod.Local.Format "2006-01-02 15:04"}}</span>
     </div>
 {{end}}

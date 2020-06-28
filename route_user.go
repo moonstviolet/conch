@@ -107,7 +107,18 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusFound)
 	} else {
 		user := session.User()
-		t, _ := template.ParseFiles("templates/user-profile.html", "templates/lib/header.html")
-		t.Execute(w, user)
+		answers, _ := data.AnswersByUid(user.Uid)
+		t, _ := template.ParseFiles(
+			"templates/user-profile.html", 
+			"templates/lib/header.html",
+			"templates/lib/answer-flow.html",
+		)
+		t.Execute(w, struct {
+			LoginUser  data.User
+			AnswerList []data.Answer
+		}{
+			LoginUser:  user,
+			AnswerList: answers,
+		})
 	}
 }

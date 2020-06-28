@@ -7,28 +7,35 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css">
     <link rel="stylesheet" type="text/css" href="/static/css/header.css">
     <link rel="stylesheet" type="text/css" href="/static/css/user-profile.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/answer-flow.css">
     <script type="text/javascript" src="/static/js/script.js"></script>
     <script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
-    <title>{{.Nickname}} - Conch</title>
+    <title>{{.LoginUser.Nickname}} - Conch</title>
     </style>
 </head>
 
 <body>
-    {{template "header" .}}
+    {{template "header" .LoginUser}}
     <div class="profile-header">
         <div class="profile-main">
             <div class="profile-avatar">
-                <img height="100" width="100" src="{{.Avatar}}">
+                <img height="100" width="100" src="{{.LoginUser.Avatar}}">
             </div>
             <div class="profile-content">
                 <ul>
-                    <li class="nickname">{{.Nickname}}</li>
-                    <li>Uid: {{.Uid}}</li>
-                    <li>{{.Motto}}</li>
+                    <li class="nickname">{{.LoginUser.Nickname}}</li>
+                    <li>Uid: {{.LoginUser.Uid}}</li>
+                    <li>{{.LoginUser.Motto}}</li>
                 </ul>
             </div>
         </div>
     </div>
+    <div class="app-main">
+        <div class="main-left">
+            {{range .AnswerList}}
+                {{template "answer-flow" .}}
+            {{end}}
+        </div>
     </div>
 </body>
 

@@ -28,6 +28,12 @@ body {
     border-color: orangered;
 }
 
+.grey-button {
+    color: #ffffff;
+    background-color: #8590a6;
+    border-color: #8590a6;
+}
+
 .button:hover {
     background-color: purple;
 }

@@ -50,6 +50,8 @@ func readQuestion(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	qid, _ := strconv.Atoi(query["qid"][0])
 	question, _ := data.QuestionById(qid)
+	question.Pageview++
+	question.Update()
 
 	answers, _ := data.AnswersByQid(qid)
 

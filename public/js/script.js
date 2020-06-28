@@ -19,3 +19,18 @@ function newQuestion() {
     //TODO 登录提示
     window.location.href = "/question/new";
 }
+
+function followQuestion() {
+    var obj = document.getElementById("followQuestion");
+    if (obj.value == "1") {
+        obj.value = "2";
+        obj.innerHTML = "已关注";
+        obj.classList.remove("orangered-button");
+        obj.classList.add("grey-button");
+    } else {
+        obj.value = "1";
+        obj.innerHTML = "关注问题";
+        obj.classList.add("orangered-button");
+        obj.classList.remove("grey-button");
+    }
+}

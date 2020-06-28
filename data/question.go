@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"sort"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -19,6 +20,20 @@ type Question struct {
 	Follow   int       `json:"follow" bson:"follow"`
 	Pageview int       `json:"pageview" bson:"pageview"`
 	Lastmod  time.Time `json:"lastmod" bson:"lastmod"`
+}
+
+type qList []Question
+
+func (ql qList) Len() int {
+	return len(ql)
+}
+
+func (ql qList) Less(i,j int) bool {
+	return ql[i].Lastmod.After(ql[j].Lastmod)
+}
+
+func (ql qList) Swap(i,j int) {
+	ql[i], ql[j] = ql[j], ql[i]
 }
 
 func (q *Question) Create() (err error) {
@@ -60,6 +75,7 @@ func QuestionList() (qlist []Question, err error) {
 		return
 	}
 	err = cursor.All(context.TODO(), &qlist)
+	sort.Sort(qList(qlist))
 	return
 }
 
