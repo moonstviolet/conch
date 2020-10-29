@@ -23,4 +23,3 @@ jobs:
           git pull
           go build
           nohup ./conch
-          exit
