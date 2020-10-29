@@ -1,0 +1,20 @@
+name: Build And Deploy
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: appleboy/ssh-action@master
+      with:
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        host: ${{ secrets.HOST }}
+        port: ${{ secrets.PORT }}
+        script: |
+          cd go/src/conch
+          go build
