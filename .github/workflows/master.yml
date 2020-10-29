@@ -17,6 +17,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           source /etc/profile
-          cd ~/local/mongodb/mongodb-linux-x86_64-3.0.6/bin
-          ./mongod -f ./mongodb.conf --fork
-          exit
+          cd ~/go/src/conch
+          git pull origin master
+          go build
+          nohup ./conch &
