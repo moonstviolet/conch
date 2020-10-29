@@ -21,3 +21,4 @@ jobs:
           git pull origin master
           go build
           nohup ./conch &
+          exit
