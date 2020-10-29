@@ -16,6 +16,8 @@ jobs:
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
         script: |
+          source ~/.bash_profile
+          source /etc/profile
           cd go/src/conch
           ls
           go build
