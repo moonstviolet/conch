@@ -17,4 +17,5 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd go/src/conch
+          ls
           go build
