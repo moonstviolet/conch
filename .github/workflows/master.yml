@@ -19,3 +19,5 @@ jobs:
           source /etc/profile
           cd ~/local/mongodb/mongodb-linux-x86_64-3.0.6/bin
           ./mongod -f mongodb.conf
+          cd ~
+          ps -A
