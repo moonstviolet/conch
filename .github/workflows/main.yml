@@ -16,8 +16,10 @@ jobs:
         host: ${{ secrets.HOST }}
         port: ${{ secrets.PORT }}
         script: |
-          source ~/.bash_profile
           source /etc/profile
-          cd go/src/conch
-          ls
+          cd ~/local/mongodb/mongodb-linux-x86_64-3.0.6/bin
+          sudo ./mongod --dbpath=../../data/db  --fork --logpath=../../data/log
+          cd ~/go/src/conch
+          git pull
           go build
+          nohup ./conch
