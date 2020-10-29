@@ -18,8 +18,8 @@ jobs:
         script: |
           source /etc/profile
           cd ~/local/mongodb/mongodb-linux-x86_64-3.0.6/bin
-          sudo ./mongod --dbpath=../../data/db  --fork --logpath=../../data/log
+          ./mongod -f mongodb.conf
           cd ~/go/src/conch
           git pull
           go build
-          nohup ./conch
+          nohup ./conch &
