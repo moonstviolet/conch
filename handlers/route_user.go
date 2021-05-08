@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"conch/data"
@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func login(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		user, err := data.UserByUsername(r.PostFormValue("username"))
@@ -39,7 +39,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func logout(w http.ResponseWriter, r *http.Request) {
+func Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
 	if err != http.ErrNoCookie {
 		session := data.Session{
@@ -50,7 +50,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func signup(w http.ResponseWriter, r *http.Request) {
+func Signup(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
@@ -82,7 +82,7 @@ func signup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func findUser(w http.ResponseWriter, r *http.Request) {
+func FindUser(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	if _, err := data.UserByUsername(query["username"][0]); err != nil {
 		b, _ := json.Marshal(struct {
@@ -101,7 +101,7 @@ func findUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func profile(w http.ResponseWriter, r *http.Request) {
+func Profile(w http.ResponseWriter, r *http.Request) {
 	session, err := data.CheckSession(r)
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusFound)
@@ -109,7 +109,7 @@ func profile(w http.ResponseWriter, r *http.Request) {
 		user := session.User()
 		answers, _ := data.AnswersByUid(user.Uid)
 		t, _ := template.ParseFiles(
-			"templates/user-profile.html", 
+			"templates/user-profile.html",
 			"templates/lib/header.html",
 			"templates/lib/answer-flow.html",
 		)

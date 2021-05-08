@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"conch/data"
@@ -13,7 +13,7 @@ func cors(h http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
+func Index(w http.ResponseWriter, r *http.Request) {
 	session, err := data.CheckSession(r)
 	t, _ := template.ParseFiles(
 		"templates/index.html",

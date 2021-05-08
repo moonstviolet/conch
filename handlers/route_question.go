@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"conch/data"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func newQuestion(w http.ResponseWriter, r *http.Request) {
+func NewQuestion(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		session, err := data.CheckSession(r)
 		if err != nil {
@@ -46,7 +46,7 @@ func newQuestion(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func readQuestion(w http.ResponseWriter, r *http.Request) {
+func ReadQuestion(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	qid, _ := strconv.Atoi(query["qid"][0])
 	question, _ := data.QuestionById(qid)
@@ -63,7 +63,6 @@ func readQuestion(w http.ResponseWriter, r *http.Request) {
 		"templates/lib/question-header.html",
 		"templates/lib/answer-flow.html",
 	)
-	info(answers)
 	t.Execute(w, struct {
 		LoginUser  data.User
 		Question   data.Question
