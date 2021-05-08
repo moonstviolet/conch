@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"conch/data"
 	"net/http"
 	"strconv"
 	"text/template"
@@ -10,7 +9,7 @@ import (
 
 func NewQuestion(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		session, err := data.CheckSession(r)
+		session, err := models.CheckSession(r)
 		if err != nil {
 			http.Redirect(w, r, "/login", http.StatusFound)
 		} else {
@@ -19,7 +18,7 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 			t.Execute(w, user)
 		}
 	} else if r.Method == "POST" {
-		session, err := data.CheckSession(r)
+		session, err := models.CheckSession(r)
 		if err != nil {
 			http.Redirect(w, r, "/login", http.StatusFound)
 		} else {
@@ -28,8 +27,8 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 				danger(err)
 			}
 			user := session.User()
-			question := data.Question{
-				Qid:      data.AutoIncrement("questions"),
+			question := models.Question{
+				Qid:      models.AutoIncrement("questions"),
 				Uid:      user.Uid,
 				Title:    r.PostFormValue("questionTitle"),
 				Detail:   r.PostFormValue("questionDetail"),
@@ -39,7 +38,7 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 			}
 			err = question.Create()
 			if err != nil {
-				danger(err)
+				//danger(err)
 			}
 			http.Redirect(w, r, "/question/read?qid="+strconv.Itoa(question.Qid), http.StatusFound)
 		}
@@ -49,13 +48,13 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 func ReadQuestion(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	qid, _ := strconv.Atoi(query["qid"][0])
-	question, _ := data.QuestionById(qid)
+	question, _ := models.QuestionById(qid)
 	question.Pageview++
 	question.Update()
 
-	answers, _ := data.AnswersByQid(qid)
+	answers, _ := modelsmodels.AnswersByQid(qid)
 
-	session, _ := data.CheckSession(r)
+	session, _ := models.CheckSession(r)
 	user := session.User()
 	t, _ := template.ParseFiles(
 		"templates/question-read.html",
@@ -64,9 +63,9 @@ func ReadQuestion(w http.ResponseWriter, r *http.Request) {
 		"templates/lib/answer-flow.html",
 	)
 	t.Execute(w, struct {
-		LoginUser  data.User
-		Question   data.Question
-		AnswerList []data.Answer
+		LoginUser  models.User
+		Question   models.Question
+		AnswerList []models.Answer
 	}{
 		LoginUser:  user,
 		Question:   question,

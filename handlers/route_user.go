@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"conch/data"
+	"conch/models"
 	"encoding/json"
 	"net/http"
 	"text/template"
@@ -10,14 +10,14 @@ import (
 func Login(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
-		user, err := data.UserByUsername(r.PostFormValue("username"))
+		user, err := models.UserByUsername(r.PostFormValue("username"))
 		if err != nil || user.Password != r.PostFormValue("password") {
 			// TODO: 最好能提示用户名或密码错误
 			http.Redirect(w, r, "login", http.StatusFound)
 		} else {
 			session, err := user.CreateSession()
 			if err != nil {
-				danger(err, "Cannot create session")
+				//danger(err, "Cannot create session")
 			}
 			cookie := http.Cookie{
 				Name:     "session",
@@ -26,11 +26,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 				MaxAge:   3600,
 			}
 			http.SetCookie(w, &cookie)
-			info("user", user.Username, "login")
+			//info("user", user.Username, "login")
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 	} else {
-		if _, err := data.CheckSession(r); err != nil {
+		if _, err := models.CheckSession(r); err != nil {
 			t, _ := template.ParseFiles("templates/login.html", "templates/lib/header.html")
 			t.Execute(w, nil)
 		} else {
@@ -42,7 +42,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func Logout(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
 	if err != http.ErrNoCookie {
-		session := data.Session{
+		session := models.Session{
 			Sid: cookie.Value,
 		}
 		session.DeleteBySid()
@@ -54,10 +54,10 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
-			danger(err)
+			//danger(err)
 		}
-		user := data.User{
-			Uid:      data.AutoIncrement("users"),
+		user := models.User{
+			Uid:      models.AutoIncrement("users"),
 			Username: r.PostFormValue("username"),
 			Password: r.PostFormValue("password"),
 			Email:    r.PostFormValue("email"),
@@ -66,14 +66,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		}
 		user.EmailHash()
 		if err := user.Create(); err != nil {
-			danger(err)
+			//danger(err)
 		} else {
 			// TODO: 最好能提示注册成功
-			info("user", user.Username, "signup")
+			//info("user", user.Username, "signup")
 			http.Redirect(w, r, "login", http.StatusFound)
 		}
 	} else {
-		if _, err := data.CheckSession(r); err != nil {
+		if _, err := models.CheckSession(r); err != nil {
 			t, _ := template.ParseFiles("templates/signup.html", "templates/lib/header.html")
 			t.Execute(w, nil)
 		} else {
@@ -84,7 +84,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 
 func FindUser(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-	if _, err := data.UserByUsername(query["username"][0]); err != nil {
+	if _, err := models.UserByUsername(query["username"][0]); err != nil {
 		b, _ := json.Marshal(struct {
 			IsValid bool `json:"isValid"`
 		}{
@@ -102,20 +102,20 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Profile(w http.ResponseWriter, r *http.Request) {
-	session, err := data.CheckSession(r)
+	session, err := models.CheckSession(r)
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusFound)
 	} else {
 		user := session.User()
-		answers, _ := data.AnswersByUid(user.Uid)
+		answers, _ := models.AnswersByUid(user.Uid)
 		t, _ := template.ParseFiles(
 			"templates/user-profile.html",
 			"templates/lib/header.html",
 			"templates/lib/answer-flow.html",
 		)
 		t.Execute(w, struct {
-			LoginUser  data.User
-			AnswerList []data.Answer
+			LoginUser  models.User
+			AnswerList []models.Answer
 		}{
 			LoginUser:  user,
 			AnswerList: answers,
