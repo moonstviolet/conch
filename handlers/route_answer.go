@@ -50,6 +50,9 @@ func NewAnswer(w http.ResponseWriter, r *http.Request) {
 			question.Modify = answer.Detail
 			question.Lastmod = answer.Lastmod
 			err := question.Update()
+			if err != nil {
+				//
+			}
 			http.Redirect(w, r, "/question/read?qid="+strconv.Itoa(question.Qid), http.StatusFound)
 		}
 	}

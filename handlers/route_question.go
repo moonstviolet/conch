@@ -25,7 +25,7 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 		} else {
 			err = r.ParseForm()
 			if err != nil {
-				danger(err)
+				//danger(err)
 			}
 			user := session.User()
 			question := models.Question{
@@ -53,7 +53,7 @@ func ReadQuestion(w http.ResponseWriter, r *http.Request) {
 	question.Pageview++
 	question.Update()
 
-	answers, _ := modelsmodels.AnswersByQid(qid)
+	answers, _ := models.AnswersByQid(qid)
 
 	session, _ := models.CheckSession(r)
 	user := session.User()
