@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"conch/models"
 	"net/http"
 	"strconv"
 	"text/template"

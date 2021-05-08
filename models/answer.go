@@ -1,4 +1,4 @@
-package data
+package models
 
 import (
 	"context"
@@ -25,11 +25,11 @@ func (al aList) Len() int {
 	return len(al)
 }
 
-func (al aList) Less(i,j int) bool {
+func (al aList) Less(i, j int) bool {
 	return al[i].Lastmod.After(al[j].Lastmod)
 }
 
-func (al aList) Swap(i,j int) {
+func (al aList) Swap(i, j int) {
 	al[i], al[j] = al[j], al[i]
 }
 
