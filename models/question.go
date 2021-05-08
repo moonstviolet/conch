@@ -1,4 +1,4 @@
-package data
+package models
 
 import (
 	"context"
@@ -28,11 +28,11 @@ func (ql qList) Len() int {
 	return len(ql)
 }
 
-func (ql qList) Less(i,j int) bool {
+func (ql qList) Less(i, j int) bool {
 	return ql[i].Lastmod.After(ql[j].Lastmod)
 }
 
-func (ql qList) Swap(i,j int) {
+func (ql qList) Swap(i, j int) {
 	ql[i], ql[j] = ql[j], ql[i]
 }
 
