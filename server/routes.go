@@ -14,6 +14,8 @@ func route(routes gin.IRoutes, method string, path string, function interface{})
 
 func routes(engine *gin.Engine) {
 	//route(engine, http.MethodGet, "/example", handlers.ShowExample)
+	//files := http.FileServer(http.Dir(config.Static))
+	//mux.Handle("/static/", http.StripPrefix("/static/", files))
 	route(engine, http.MethodGet, "/", handlers.Index)
 	route(engine, http.MethodGet, "/login", handlers.Login)
 	route(engine, http.MethodPost, "/logout", handlers.Logout)
