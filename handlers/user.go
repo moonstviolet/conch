@@ -1,13 +1,15 @@
 package handlers
 
 import (
+	"conch/error_code"
 	"conch/models"
+	"conch/proto"
 	"encoding/json"
 	"net/http"
 	"text/template"
 )
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Login(rep *proto.LoginReq, resp *proto.LoginResp) *error_code.RespError {
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		user, err := models.UserByUsername(r.PostFormValue("username"))
@@ -39,7 +41,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Logout(w http.ResponseWriter, r *http.Request) {
+func Logout(rep *proto.LogoutReq, resp *proto.LogoutResp) *error_code.RespError {
 	cookie, err := r.Cookie("session")
 	if err != http.ErrNoCookie {
 		session := models.Session{
@@ -50,7 +52,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func Signup(w http.ResponseWriter, r *http.Request) {
+func Signup(rep *proto.SignupReq, resp *proto.SignupResp) *error_code.RespError {
 	if r.Method == "POST" {
 		err := r.ParseForm()
 		if err != nil {
@@ -82,7 +84,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func FindUser(w http.ResponseWriter, r *http.Request) {
+func FindUser(rep *proto.FindUserReq, resp *proto.FindUserResp) *error_code.RespError {
 	query := r.URL.Query()
 	if _, err := models.UserByUsername(query["username"][0]); err != nil {
 		b, _ := json.Marshal(struct {
@@ -101,7 +103,7 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Profile(w http.ResponseWriter, r *http.Request) {
+func Profile(rep *proto.ProfileReq, resp *proto.ProfileResp) *error_code.RespError {
 	session, err := models.CheckSession(r)
 	if err != nil {
 		http.Redirect(w, r, "/login", http.StatusFound)

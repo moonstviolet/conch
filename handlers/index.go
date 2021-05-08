@@ -1,20 +1,14 @@
 package handlers
 
 import (
+	"conch/error_code"
 	"conch/models"
-	"net/http"
+	"conch/proto"
 	"text/template"
 )
 
-func cors(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		h(w, r)
-	}
-}
-
-func Index(w http.ResponseWriter, r *http.Request) {
-	session, err := models.CheckSession(r)
+func Index(rep *proto.IndexReq, resp *proto.IndexResp) *error_code.RespError {
+	session, err := models.CheckSession(rep)
 	t, _ := template.ParseFiles(
 		"templates/index.html",
 		"templates/lib/header.html",
@@ -39,4 +33,5 @@ func Index(w http.ResponseWriter, r *http.Request) {
 			QList: qlist,
 		})
 	}
+	return nil
 }
