@@ -1,14 +1,16 @@
 package handlers
 
 import (
+	"conch/error_code"
 	"conch/models"
+	"conch/proto"
 	"net/http"
 	"strconv"
 	"text/template"
 	"time"
 )
 
-func NewQuestion(w http.ResponseWriter, r *http.Request) {
+func NewQuestion(rep *proto.NewQuestionReq, resp *proto.NewQuestionResp) *error_code.RespError {
 	if r.Method == "GET" {
 		session, err := models.CheckSession(r)
 		if err != nil {
@@ -46,7 +48,7 @@ func NewQuestion(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ReadQuestion(w http.ResponseWriter, r *http.Request) {
+func ReadQuestion(rep *proto.ReadQuestionReq, resp *proto.ReadQuestionResp) *error_code.RespError {
 	query := r.URL.Query()
 	qid, _ := strconv.Atoi(query["qid"][0])
 	question, _ := models.QuestionById(qid)

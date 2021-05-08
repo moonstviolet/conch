@@ -1,7 +1,13 @@
 package proto
 
-type IndexReq struct {
+type NewQuestionReq struct {
 }
 
-type IndexResp struct {
+type NewQuestionResp struct {
+}
+
+type ReadQuestionReq struct {
+}
+
+type ReadQuestionResp struct {
 }
