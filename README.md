@@ -1,33 +1,5 @@
 # conch
 A question-and-answer website
 
-### 表
-* **counters**
-  * 自增计数器
-* **users**
-  * 用户
-* **sessions**
-  * sessions，关联登录用户
-* **questions** 
-  * 问题，关联题主
-* **answers** 
-  * 答案，关联答主和归属问题
-* **qfollows**
-  * **users** 和 **questions** 的映射
-* **ufllow**
-  * **users** 和 **users** 的映射
-
-
-db.users.remove({})
-db.counters.remove({})
-db.sessions.remove({})
-db.questions.remove({})
-db.answers.remove({})
-db.qfollow.remove({})
-
-db.createCollection("counters")
-db.createCollection("users")
-db.createCollection("sessions")
-db.createCollection("questions")
-db.createCollection("answers")
-db.createCollection("qfollows")
+* 模仿“知乎”的问答社区网站
+* 在开源框架Gin的基础上进行了简单的封装
