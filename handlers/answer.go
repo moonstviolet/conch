@@ -12,8 +12,8 @@ import (
 )
 
 func NewAnswer(c *gin.Context) {
-	cookie, _ := c.Request.Cookie("session")
-	session, _ := models.CheckSession(cookie.Value)
+	cookie, _ := c.Cookie("session")
+	session, _ := models.CheckSession(cookie)
 	user := session.User()
 
 	var req proto.NewAnswerReq
@@ -51,8 +51,8 @@ func NewAnswer(c *gin.Context) {
 }
 
 func ReadAnswer(c *gin.Context) {
-	cookie, _ := c.Request.Cookie("session")
-	session, _ := models.CheckSession(cookie.Value)
+	cookie, _ := c.Cookie("session")
+	session, _ := models.CheckSession(cookie)
 	user := session.User()
 
 	var req proto.NewAnswerReq

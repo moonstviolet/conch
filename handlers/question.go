@@ -12,8 +12,8 @@ import (
 )
 
 func NewQuestion(c *gin.Context) {
-	cookie, _ := c.Request.Cookie("session")
-	session, _ := models.CheckSession(cookie.Value)
+	cookie, _ := c.Cookie("session")
+	session, _ := models.CheckSession(cookie)
 	user := session.User()
 
 	if c.Request.Method == "GET" {
@@ -55,9 +55,9 @@ func ReadQuestion(c *gin.Context) {
 	_ = question.Update()
 	answers, _ := models.AnswersByQid(req.Qid)
 	var user models.User
-	cookie, err := c.Request.Cookie("session")
+	cookie, err := c.Cookie("session")
 	if err == nil {
-		if session, err := models.CheckSession(cookie.Value); err != nil {
+		if session, err := models.CheckSession(cookie); err != nil {
 			user = session.User()
 		}
 	}

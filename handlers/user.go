@@ -12,9 +12,9 @@ import (
 
 func Login(c *gin.Context) {
 	if c.Request.Method == "GET" {
-		cookie, err := c.Request.Cookie("session")
+		cookie, err := c.Cookie("session")
 		if err == nil {
-			_, err = models.CheckSession(cookie.Value)
+			_, err = models.CheckSession(cookie)
 		}
 		if err != nil {
 			c.HTML(http.StatusOK, "login.html", "")
@@ -44,17 +44,18 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	cookie, _ := c.Request.Cookie("session")
-	session, _ := models.CheckSession(cookie.Value)
+	cookie, _ := c.Cookie("session")
+	session, _ := models.CheckSession(cookie)
+	c.SetCookie("session", session.Sid, -1, "/", "localhost", false, true)
 	_ = session.DeleteBySid()
 	c.Redirect(http.StatusFound, "/")
 }
 
 func Signup(c *gin.Context) {
 	if c.Request.Method == "GET" {
-		cookie, err := c.Request.Cookie("session")
+		cookie, err := c.Cookie("session")
 		if err == nil {
-			_, err = models.CheckSession(cookie.Value)
+			_, err = models.CheckSession(cookie)
 		}
 		if err != nil {
 			c.HTML(http.StatusOK, "signup.html", "")
@@ -97,8 +98,8 @@ func FindUser(req *proto.FindUserReq, resp *proto.FindUserResp) *error_code.Resp
 }
 
 func Profile(c *gin.Context) {
-	cookie, _ := c.Request.Cookie("session")
-	session, _ := models.CheckSession(cookie.Value)
+	cookie, _ := c.Cookie("session")
+	session, _ := models.CheckSession(cookie)
 	user := session.User()
 	answers, _ := models.AnswersByUid(user.Uid)
 	c.HTML(http.StatusOK, "user-profile.html", gin.H{

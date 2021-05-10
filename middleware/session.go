@@ -9,9 +9,9 @@ import (
 
 func Session() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		cookie, err := c.Request.Cookie("session")
+		cookie, err := c.Cookie("session")
 		if err == nil {
-			_, err = models.CheckSession(cookie.Value)
+			_, err = models.CheckSession(cookie)
 		}
 		if err == nil {
 			c.Next()

@@ -9,9 +9,9 @@ import (
 
 func Index(c *gin.Context) {
 	qlist, _ := models.QuestionList()
-	cookie, err := c.Request.Cookie("session")
+	cookie, err := c.Cookie("session")
 	if err == nil {
-		if session, err := models.CheckSession(cookie.Value); err == nil {
+		if session, err := models.CheckSession(cookie); err == nil {
 			user := session.User()
 			c.HTML(http.StatusOK, "index.html", gin.H{
 				"QList": qlist,
