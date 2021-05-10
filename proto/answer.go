@@ -1,13 +1,10 @@
 package proto
 
 type NewAnswerReq struct {
-}
-
-type NewAnswerResp struct {
+	Qid          int    `json:"qid" form:"qid"`
+	AnswerDetail string `json:"answerDetail" form:"answerDetail"`
 }
 
 type ReadAnswerReq struct {
-}
-
-type ReadAnswerResp struct {
+	Qid int `json:"qid" form:"qid"`
 }

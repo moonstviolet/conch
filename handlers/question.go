@@ -36,7 +36,7 @@ func NewQuestion(c *gin.Context) {
 		Lastmod:  time.Now(),
 	}
 	if err := question.Create(); err != nil {
-		log.Fatalf("Cannot create questionn, %v", err)
+		log.Fatalf("Cannot create question, %v", err)
 		c.Redirect(http.StatusFound, "/question/new")
 		return
 	}
@@ -52,7 +52,7 @@ func ReadQuestion(c *gin.Context) {
 
 	question, _ := models.QuestionById(req.Qid)
 	question.Pageview++
-	question.Update()
+	_ = question.Update()
 	answers, _ := models.AnswersByQid(req.Qid)
 	var user models.User
 	cookie, err := c.Request.Cookie("session")
