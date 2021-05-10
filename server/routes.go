@@ -17,6 +17,8 @@ func routes(engine *gin.Engine) {
 	//files := http.FileServer(http.Dir(config.Static))
 
 	engine.Handle(http.MethodGet, "/", handlers.Index)
+	engine.Handle(http.MethodGet, "/login", handlers.Login)
+	engine.Handle(http.MethodPost, "/login", handlers.Login)
 
 	logined := engine.Group("")
 	logined.Use(middleware.Session())

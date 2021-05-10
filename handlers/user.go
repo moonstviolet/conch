@@ -1,45 +1,46 @@
 package handlers
 
-// import (
-// 	"conch/error_code"
-// 	"conch/models"
-// 	"conch/proto"
-// 	"encoding/json"
-// 	"net/http"
-// 	"text/template"
-// )
+import (
+	"conch/models"
+	"conch/proto"
+	"log"
+	"net/http"
 
-// func Login(rep *proto.LoginReq, resp *proto.LoginResp) *error_code.RespError {
-// 	if r.Method == "POST" {
-// 		err := r.ParseForm()
-// 		user, err := models.UserByUsername(r.PostFormValue("username"))
-// 		if err != nil || user.Password != r.PostFormValue("password") {
-// 			// TODO: 最好能提示用户名或密码错误
-// 			http.Redirect(w, r, "login", http.StatusFound)
-// 		} else {
-// 			session, err := user.CreateSession()
-// 			if err != nil {
-// 				//danger(err, "Cannot create session")
-// 			}
-// 			cookie := http.Cookie{
-// 				Name:     "session",
-// 				Value:    session.Sid,
-// 				HttpOnly: true,
-// 				MaxAge:   3600,
-// 			}
-// 			http.SetCookie(w, &cookie)
-// 			//info("user", user.Username, "login")
-// 			http.Redirect(w, r, "/", http.StatusFound)
-// 		}
-// 	} else {
-// 		if _, err := models.CheckSession(r); err != nil {
-// 			t, _ := template.ParseFiles("templates/login.html", "templates/lib/header.html")
-// 			t.Execute(w, nil)
-// 		} else {
-// 			http.Redirect(w, r, "/", http.StatusFound)
-// 		}
-// 	}
-// }
+	"github.com/gin-gonic/gin"
+)
+
+func Login(c *gin.Context) {
+	if c.Request.Method == "GET" {
+		cookie, err := c.Request.Cookie("session")
+		if err == nil {
+			_, err = models.CheckSession(cookie.Value)
+		}
+		if err != nil {
+			c.HTML(http.StatusOK, "login.html", "")
+		} else {
+			c.Redirect(http.StatusFound, "/")
+		}
+		return
+	}
+
+	var req proto.LoginReq
+	if err := c.ShouldBind(&req); err != nil {
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+	user, err := models.UserByUsername(req.Username)
+	if err != nil || user.Password != req.Password {
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	session, err := user.CreateSession()
+	if err != nil {
+		log.Fatalf("%v, Cannot create session", err)
+	}
+	c.SetCookie("session", session.Sid, 3600, "/", "localhost", false, true)
+	c.Redirect(http.StatusFound, "/")
+}
 
 // func Logout(rep *proto.LogoutReq, resp *proto.LogoutResp) *error_code.RespError {
 // 	cookie, err := r.Cookie("session")
