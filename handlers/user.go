@@ -29,6 +29,9 @@ func Login(c *gin.Context) {
 		c.Redirect(http.StatusFound, "/login")
 		return
 	}
+
+	log.Println(req)
+
 	user, err := models.UserByUsername(req.Username)
 	if err != nil || user.Password != req.Password {
 		c.Redirect(http.StatusFound, "/login")

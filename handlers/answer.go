@@ -47,6 +47,7 @@ func NewAnswer(c *gin.Context) {
 	if err != nil {
 		log.Fatalf("Cannot create answer, %v", err)
 	}
+	log.Println(user)
 	c.Redirect(http.StatusFound, "/question/read?qid="+strconv.Itoa(question.Qid))
 }
 

@@ -1,0 +1,14 @@
+use conch;
+db.answers.remove({});
+db.counters.remove({});
+db.qfollows.remove({});
+db.questions.remove({});
+db.sessions.remove({});
+db.users.remove({});
+
+db.answers.find();
+db.counters.find();
+db.qfollows.find();
+db.questions.find();
+db.sessions.find();
+db.users.find();

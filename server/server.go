@@ -2,6 +2,7 @@ package server
 
 import (
 	"conch/config"
+	"conch/middleware"
 	"log"
 	"net/http"
 
@@ -20,6 +21,7 @@ func NewServer() *http.Server {
 	router.Use(gin.Recovery())
 	router.LoadHTMLGlob("templates/*")
 	router.Static("/static", "public")
+	router.Use(middleware.Cors())
 	routes(router)
 	server := &http.Server{
 		Addr:           ":" + gConfig.Server.HttpPort,
