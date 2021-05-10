@@ -1,33 +1,22 @@
 package proto
 
-import "conch/models"
-
 type LoginReq struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type LogoutReq struct {
-}
-
-type LogoutResp struct {
-}
-
 type SignupReq struct {
-	User models.User
-}
-
-type SignupResp struct {
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
+	Email    string `json:"email" form:"email"`
+	Nickname string `json:"nickname" form:"nickname"`
+	Motto    string `json:"motto" form:"motto"`
 }
 
 type FindUserReq struct {
+	Username string `json:"username" form:"username"`
 }
 
 type FindUserResp struct {
-}
-
-type ProfileReq struct {
-}
-
-type ProfileResp struct {
+	IsValid bool `json:"isValid"`
 }

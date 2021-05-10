@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"conch/error_code"
 	"conch/models"
 	"conch/proto"
 	"log"
@@ -64,13 +65,21 @@ func Signup(c *gin.Context) {
 	}
 
 	var req proto.SignupReq
-	if err := c.ShouldBind(&req.User); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.Redirect(http.StatusFound, "/signup")
 		return
 	}
-	req.User.Uid = models.AutoIncrement("users")
-	req.User.EmailHash()
-	if err := req.User.Create(); err != nil {
+	user := models.User{
+		Username: req.Username,
+		Password: req.Password,
+		Email:    req.Email,
+		Nickname: req.Nickname,
+		Motto:    req.Motto,
+	}
+	user.Uid = models.AutoIncrement("users")
+	user.EmailHash()
+
+	if err := user.Create(); err != nil {
 		// todo
 		log.Fatalf("Cannot create user, %v", err)
 	} else {
@@ -78,24 +87,14 @@ func Signup(c *gin.Context) {
 	}
 }
 
-// func FindUser(rep *proto.FindUserReq, resp *proto.FindUserResp) *error_code.RespError {
-// 	query := r.URL.Query()
-// 	if _, err := models.UserByUsername(query["username"][0]); err != nil {
-// 		b, _ := json.Marshal(struct {
-// 			IsValid bool `json:"isValid"`
-// 		}{
-// 			IsValid: true,
-// 		})
-// 		w.Write(b)
-// 	} else {
-// 		b, _ := json.Marshal(struct {
-// 			IsValid bool `json:"isValid"`
-// 		}{
-// 			IsValid: false,
-// 		})
-// 		w.Write(b)
-// 	}
-// }
+func FindUser(req *proto.FindUserReq, resp *proto.FindUserResp) *error_code.RespError {
+	if _, err := models.UserByUsername(req.Username); err != nil {
+		resp.IsValid = true
+	} else {
+		resp.IsValid = false
+	}
+	return nil
+}
 
 func Profile(c *gin.Context) {
 	cookie, _ := c.Request.Cookie("session")

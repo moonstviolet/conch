@@ -3,8 +3,8 @@ function validateForm(thisform) {
     xmlhttp.open("GET", "/user/find?username=" + thisform.username.value, false)
     xmlhttp.send()
     var text = xmlhttp.responseText;
-    var obj = JSON.parse(text)
-    if (obj["isValid"] == false) {
+    var obj = JSON.parse(text);
+    if (obj["data"]["isValid"] == false) {
         alert("用户名已被占用");
         return false;
     }
