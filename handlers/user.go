@@ -42,16 +42,16 @@ func Login(c *gin.Context) {
 	c.Redirect(http.StatusFound, "/")
 }
 
-// func Logout(rep *proto.LogoutReq, resp *proto.LogoutResp) *error_code.RespError {
-// 	cookie, err := r.Cookie("session")
-// 	if err != http.ErrNoCookie {
-// 		session := models.Session{
-// 			Sid: cookie.Value,
-// 		}
-// 		session.DeleteBySid()
-// 	}
-// 	http.Redirect(w, r, "/", http.StatusFound)
-// }
+func Logout(c *gin.Context) {
+	cookie, err := c.Request.Cookie("session")
+	if err == nil {
+		session := models.Session{
+			Sid: cookie.Value,
+		}
+		_ = session.DeleteBySid()
+	}
+	c.Redirect(http.StatusFound, "/")
+}
 
 func Signup(c *gin.Context) {
 	if c.Request.Method == "GET" {
@@ -75,6 +75,7 @@ func Signup(c *gin.Context) {
 	req.User.Uid = models.AutoIncrement("users")
 	req.User.EmailHash()
 	if err := req.User.Create(); err != nil {
+		// todo
 		log.Fatalf("Cannot create user, %v", err)
 	} else {
 		c.Redirect(http.StatusFound, "/login")

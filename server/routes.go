@@ -25,7 +25,7 @@ func routes(engine *gin.Engine) {
 	logined := engine.Group("")
 	logined.Use(middleware.Session())
 	{
-
+		logined.Handle(http.MethodGet, "/logout", handlers.Logout)
 	}
 
 	//route(engine, http.MethodGet, "/", handlers.Index)
