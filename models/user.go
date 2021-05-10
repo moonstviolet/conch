@@ -5,7 +5,6 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
-	"net/http"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -74,20 +73,18 @@ func (user *User) CreateSession() (session Session, err error) {
 	return
 }
 
-func CheckSession(r *http.Request) (s Session, err error) {
-	cookie, err := r.Cookie("session")
-	if err == nil {
-		sessionColl := db.Collection("sessions")
-		fliter := bson.M{
-			"_id": cookie.Value,
-		}
-		res := sessionColl.FindOne(context.TODO(), fliter)
-		err = res.Decode(&s)
-		if err == nil && s.Sid == "" {
-			err = errors.New("Invalid session")
-		}
+func CheckSession(session string) (err error) {
+	sessionColl := db.Collection("sessions")
+	fliter := bson.M{
+		"_id": session,
 	}
-	return
+	res := sessionColl.FindOne(context.TODO(), fliter)
+	var s Session
+	err = res.Decode(&s)
+	if err == nil && s.Sid == "" {
+		err = errors.New("Invalid session")
+	}
+	return err
 }
 
 func (s *Session) User() (user User) {

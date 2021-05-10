@@ -7,11 +7,6 @@ import (
 func Index(c *gin.Context) {
 	c.HTML(200, "index.html,header.html", "")
 
-	// t, _ := template.ParseFiles(
-	// 	"templates/index.html",
-	// 	"templates/lib/header.html",
-	// 	"templates/lib/question-flow.html",
-	// )
 	// if err != nil {
 	// 	qlist, _ := models.QuestionList()
 	// 	t.Execute(w, struct {

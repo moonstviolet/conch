@@ -23,6 +23,12 @@ func routes(engine *gin.Engine) {
 		})
 	})
 
+	logined := engine.Group("/api/l1")
+	logined.Use(middleware.Session())
+	{
+
+	}
+
 	//route(engine, http.MethodGet, "/", handlers.Index)
 	// route(engine, http.MethodGet, "/login", handlers.Login)
 	// route(engine, http.MethodPost, "/logout", handlers.Logout)
