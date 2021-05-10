@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/question-flow.css">
     <link rel="stylesheet" type="text/css" href="/static/css/index.css">
     <script type="text/javascript" src="/static/js/script.js"></script>
-    <script type="text/javascript" src="/static/js/wangEditor.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
     <title>Conch</title>
     </style>
 </head>
@@ -26,7 +26,7 @@
                 </ul>
             </div>
             {{range .QList}}
-                {{template "question-flow" .}}
+            {{template "question-flow" .}}
             {{end}}
         </div>
         <div class="sidebar" style="text-align: center;">
