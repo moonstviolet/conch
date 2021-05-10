@@ -26,6 +26,7 @@ func routes(engine *gin.Engine) {
 	logined.Use(middleware.Session())
 	{
 		logined.Handle(http.MethodGet, "/logout", handlers.Logout)
+		logined.Handle(http.MethodGet, "/user/profile", handlers.Profile)
 	}
 
 	//route(engine, http.MethodGet, "/", handlers.Index)

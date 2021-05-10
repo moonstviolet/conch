@@ -43,13 +43,9 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	cookie, err := c.Request.Cookie("session")
-	if err == nil {
-		session := models.Session{
-			Sid: cookie.Value,
-		}
-		_ = session.DeleteBySid()
-	}
+	cookie, _ := c.Request.Cookie("session")
+	session, _ := models.CheckSession(cookie.Value)
+	_ = session.DeleteBySid()
 	c.Redirect(http.StatusFound, "/")
 }
 
@@ -101,24 +97,13 @@ func Signup(c *gin.Context) {
 // 	}
 // }
 
-// func Profile(rep *proto.ProfileReq, resp *proto.ProfileResp) *error_code.RespError {
-// 	session, err := models.CheckSession(r)
-// 	if err != nil {
-// 		http.Redirect(w, r, "/login", http.StatusFound)
-// 	} else {
-// 		user := session.User()
-// 		answers, _ := models.AnswersByUid(user.Uid)
-// 		t, _ := template.ParseFiles(
-// 			"templates/user-profile.html",
-// 			"templates/lib/header.html",
-// 			"templates/lib/answer-flow.html",
-// 		)
-// 		t.Execute(w, struct {
-// 			LoginUser  models.User
-// 			AnswerList []models.Answer
-// 		}{
-// 			LoginUser:  user,
-// 			AnswerList: answers,
-// 		})
-// 	}
-// }
+func Profile(c *gin.Context) {
+	cookie, _ := c.Request.Cookie("session")
+	session, _ := models.CheckSession(cookie.Value)
+	user := session.User()
+	answers, _ := models.AnswersByUid(user.Uid)
+	c.HTML(http.StatusOK, "user-profile.html", gin.H{
+		"LoginUser":  user,
+		"AnswerList": answers,
+	})
+}
