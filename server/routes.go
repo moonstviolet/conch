@@ -1,8 +1,8 @@
 package server
 
 import (
+	"conch/handlers"
 	"conch/middleware"
-	"conch/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,14 +16,9 @@ func routes(engine *gin.Engine) {
 	//route(engine, http.MethodGet, "/example", handlers.ShowExample)
 	//files := http.FileServer(http.Dir(config.Static))
 
-	engine.Handle(http.MethodGet, "/", func(c *gin.Context) {
-		qlist, _ := models.QuestionList()
-		c.HTML(200, "index.html", gin.H{
-			"QList": qlist,
-		})
-	})
+	engine.Handle(http.MethodGet, "/", handlers.Index)
 
-	logined := engine.Group("/api/l1")
+	logined := engine.Group("")
 	logined.Use(middleware.Session())
 	{
 

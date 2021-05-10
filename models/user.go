@@ -73,18 +73,17 @@ func (user *User) CreateSession() (session Session, err error) {
 	return
 }
 
-func CheckSession(session string) (err error) {
+func CheckSession(sid string) (s Session, err error) {
 	sessionColl := db.Collection("sessions")
 	fliter := bson.M{
-		"_id": session,
+		"_id": sid,
 	}
 	res := sessionColl.FindOne(context.TODO(), fliter)
-	var s Session
 	err = res.Decode(&s)
 	if err == nil && s.Sid == "" {
 		err = errors.New("Invalid session")
 	}
-	return err
+	return
 }
 
 func (s *Session) User() (user User) {
