@@ -18,6 +18,8 @@ func NewServer() *http.Server {
 	router := gin.New()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.LoadHTMLGlob("templates/*")
+	router.Static("/static", "public")
 	routes(router)
 	server := &http.Server{
 		Addr:           ":" + gConfig.Server.HttpPort,
