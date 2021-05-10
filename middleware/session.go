@@ -17,6 +17,7 @@ func Session() gin.HandlerFunc {
 			c.Next()
 			return
 		}
+		//c.PureJSON(http.StatusFound, "请登录后操作!")
 		c.Redirect(http.StatusFound, "/login")
 		c.Abort()
 	}

@@ -1,77 +1,69 @@
 package handlers
 
-// import (
-// 	"conch/error_code"
-// 	"conch/models"
-// 	"conch/proto"
-// 	"net/http"
-// 	"strconv"
-// 	"text/template"
-// 	"time"
-// )
+import (
+	"conch/models"
+	"conch/proto"
+	"log"
+	"net/http"
+	"strconv"
+	"time"
 
-// func NewQuestion(rep *proto.NewQuestionReq, resp *proto.NewQuestionResp) *error_code.RespError {
-// 	if r.Method == "GET" {
-// 		session, err := models.CheckSession(r)
-// 		if err != nil {
-// 			http.Redirect(w, r, "/login", http.StatusFound)
-// 		} else {
-// 			user := session.User()
-// 			t, _ := template.ParseFiles("templates/question-new.html", "templates/lib/header.html")
-// 			t.Execute(w, user)
-// 		}
-// 	} else if r.Method == "POST" {
-// 		session, err := models.CheckSession(r)
-// 		if err != nil {
-// 			http.Redirect(w, r, "/login", http.StatusFound)
-// 		} else {
-// 			err = r.ParseForm()
-// 			if err != nil {
-// 				//danger(err)
-// 			}
-// 			user := session.User()
-// 			question := models.Question{
-// 				Qid:      models.AutoIncrement("questions"),
-// 				Uid:      user.Uid,
-// 				Title:    r.PostFormValue("questionTitle"),
-// 				Detail:   r.PostFormValue("questionDetail"),
-// 				Follow:   1,
-// 				Pageview: 1,
-// 				Lastmod:  time.Now(),
-// 			}
-// 			err = question.Create()
-// 			if err != nil {
-// 				//danger(err)
-// 			}
-// 			http.Redirect(w, r, "/question/read?qid="+strconv.Itoa(question.Qid), http.StatusFound)
-// 		}
-// 	}
-// }
+	"github.com/gin-gonic/gin"
+)
 
-// func ReadQuestion(rep *proto.ReadQuestionReq, resp *proto.ReadQuestionResp) *error_code.RespError {
-// 	query := r.URL.Query()
-// 	qid, _ := strconv.Atoi(query["qid"][0])
-// 	question, _ := models.QuestionById(qid)
-// 	question.Pageview++
-// 	question.Update()
+func NewQuestion(c *gin.Context) {
+	cookie, _ := c.Request.Cookie("session")
+	session, _ := models.CheckSession(cookie.Value)
+	user := session.User()
 
-// 	answers, _ := models.AnswersByQid(qid)
+	if c.Request.Method == "GET" {
+		c.HTML(http.StatusOK, "question-new.html", user)
+		return
+	}
 
-// 	session, _ := models.CheckSession(r)
-// 	user := session.User()
-// 	t, _ := template.ParseFiles(
-// 		"templates/question-read.html",
-// 		"templates/lib/header.html",
-// 		"templates/lib/question-header.html",
-// 		"templates/lib/answer-flow.html",
-// 	)
-// 	t.Execute(w, struct {
-// 		LoginUser  models.User
-// 		Question   models.Question
-// 		AnswerList []models.Answer
-// 	}{
-// 		LoginUser:  user,
-// 		Question:   question,
-// 		AnswerList: answers,
-// 	})
-// }
+	var req proto.NewQuestionReq
+	if err := c.ShouldBind(&req); err != nil {
+		c.Redirect(http.StatusFound, "/question/new")
+		return
+	}
+	question := models.Question{
+		Qid:      models.AutoIncrement("questions"),
+		Uid:      user.Uid,
+		Title:    req.QuestionTitle,
+		Detail:   req.QuestionDetail,
+		Follow:   1,
+		Pageview: 1,
+		Lastmod:  time.Now(),
+	}
+	if err := question.Create(); err != nil {
+		log.Fatalf("Cannot create questionn, %v", err)
+		c.Redirect(http.StatusFound, "/question/new")
+		return
+	}
+	c.Redirect(http.StatusFound, "/question/read?qid="+strconv.Itoa(question.Qid))
+}
+
+func ReadQuestion(c *gin.Context) {
+	var req proto.ReadQuestionReq
+	if err := c.ShouldBind(&req); err != nil {
+		//c.Redirect(http.StatusFound, "/error")
+		return
+	}
+
+	question, _ := models.QuestionById(req.Qid)
+	question.Pageview++
+	question.Update()
+	answers, _ := models.AnswersByQid(req.Qid)
+	var user models.User
+	cookie, err := c.Request.Cookie("session")
+	if err == nil {
+		if session, err := models.CheckSession(cookie.Value); err != nil {
+			user = session.User()
+		}
+	}
+	c.HTML(http.StatusOK, "question-read.html", gin.H{
+		"LoginUser":  user,
+		"Question":   question,
+		"AnswerList": answers,
+	})
+}
