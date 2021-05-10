@@ -48,8 +48,7 @@ func QuestionById(qid int) (q Question, err error) {
 		"_id": qid,
 	}
 	res := questionColl.FindOne(context.TODO(), filter)
-	res.Decode(&q)
-	if err == nil && q.Qid == 0 {
+	if err = res.Decode(&q); err == nil && q.Qid == 0 {
 		err = errors.New("Can find question")
 	}
 	return

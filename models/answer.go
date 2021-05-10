@@ -45,8 +45,7 @@ func AnswerById(id int) (a Answer, err error) {
 		"_id": id,
 	}
 	res := answerColl.FindOne(context.TODO(), fliter)
-	res.Decode(&a)
-	if err == nil && a.Aid == 0 {
+	if err = res.Decode(&a); err == nil && a.Aid == 0 {
 		err = errors.New("Can find question")
 	}
 	return

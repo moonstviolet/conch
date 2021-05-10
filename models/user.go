@@ -50,8 +50,7 @@ func UserByUsername(name string) (user User, err error) {
 		"username": name,
 	}
 	res := userColl.FindOne(context.TODO(), fliter)
-	res.Decode(&user)
-	if err == nil && user.Uid == 0 {
+	if err = res.Decode(&user); err == nil && user.Uid == 0 {
 		err = errors.New("Can find user")
 	}
 	return
@@ -92,7 +91,7 @@ func (s *Session) User() (user User) {
 		"_id": s.Uid,
 	}
 	res := userColl.FindOne(context.TODO(), fliter)
-	res.Decode(&user)
+	_ = res.Decode(&user)
 	return
 }
 

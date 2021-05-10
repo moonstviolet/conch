@@ -37,7 +37,7 @@ func AutoIncrement(name string) int {
 	}
 	res := Counter{}
 	cursor := counters.FindOne(context.TODO(), fliter)
-	cursor.Decode(&res)
+	_ = cursor.Decode(&res)
 	if res.Count == 0 {
 		res.Name = name
 		res.Count++
