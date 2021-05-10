@@ -19,6 +19,8 @@ func routes(engine *gin.Engine) {
 	engine.Handle(http.MethodGet, "/", handlers.Index)
 	engine.Handle(http.MethodGet, "/login", handlers.Login)
 	engine.Handle(http.MethodPost, "/login", handlers.Login)
+	engine.Handle(http.MethodGet, "/signup", handlers.Signup)
+	engine.Handle(http.MethodPost, "/signup", handlers.Signup)
 
 	logined := engine.Group("")
 	logined.Use(middleware.Session())

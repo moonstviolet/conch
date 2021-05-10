@@ -36,7 +36,7 @@ func Login(c *gin.Context) {
 
 	session, err := user.CreateSession()
 	if err != nil {
-		log.Fatalf("%v, Cannot create session", err)
+		log.Fatalf("Cannot create session, %v", err)
 	}
 	c.SetCookie("session", session.Sid, 3600, "/", "localhost", false, true)
 	c.Redirect(http.StatusFound, "/")
@@ -53,37 +53,33 @@ func Login(c *gin.Context) {
 // 	http.Redirect(w, r, "/", http.StatusFound)
 // }
 
-// func Signup(rep *proto.SignupReq, resp *proto.SignupResp) *error_code.RespError {
-// 	if r.Method == "POST" {
-// 		err := r.ParseForm()
-// 		if err != nil {
-// 			//danger(err)
-// 		}
-// 		user := models.User{
-// 			Uid:      models.AutoIncrement("users"),
-// 			Username: r.PostFormValue("username"),
-// 			Password: r.PostFormValue("password"),
-// 			Email:    r.PostFormValue("email"),
-// 			Nickname: r.PostFormValue("nickname"),
-// 			Motto:    r.PostFormValue("motto"),
-// 		}
-// 		user.EmailHash()
-// 		if err := user.Create(); err != nil {
-// 			//danger(err)
-// 		} else {
-// 			// TODO: 最好能提示注册成功
-// 			//info("user", user.Username, "signup")
-// 			http.Redirect(w, r, "login", http.StatusFound)
-// 		}
-// 	} else {
-// 		if _, err := models.CheckSession(r); err != nil {
-// 			t, _ := template.ParseFiles("templates/signup.html", "templates/lib/header.html")
-// 			t.Execute(w, nil)
-// 		} else {
-// 			http.Redirect(w, r, "/", http.StatusFound)
-// 		}
-// 	}
-// }
+func Signup(c *gin.Context) {
+	if c.Request.Method == "GET" {
+		cookie, err := c.Request.Cookie("session")
+		if err == nil {
+			_, err = models.CheckSession(cookie.Value)
+		}
+		if err != nil {
+			c.HTML(http.StatusOK, "signup.html", "")
+		} else {
+			c.Redirect(http.StatusFound, "/")
+		}
+		return
+	}
+
+	var req proto.SignupReq
+	if err := c.ShouldBind(&req.User); err != nil {
+		c.Redirect(http.StatusFound, "/signup")
+		return
+	}
+	req.User.Uid = models.AutoIncrement("users")
+	req.User.EmailHash()
+	if err := req.User.Create(); err != nil {
+		log.Fatalf("Cannot create user, %v", err)
+	} else {
+		c.Redirect(http.StatusFound, "/login")
+	}
+}
 
 // func FindUser(rep *proto.FindUserReq, resp *proto.FindUserResp) *error_code.RespError {
 // 	query := r.URL.Query()
