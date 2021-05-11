@@ -8,7 +8,6 @@ import (
 
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		method := c.Request.Method
 		origin := c.Request.Header.Get("Origin")
 		if origin != "" {
 			//接收客户端发送的origin （重要！）
@@ -24,8 +23,7 @@ func Cors() gin.HandlerFunc {
 			//允许客户端传递校验信息比如 cookie (重要)
 			c.Header("Access-Control-Allow-Credentials", "true")
 		}
-
-		if method == "OPTIONS" {
+		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusOK)
 		}
 		c.Next()

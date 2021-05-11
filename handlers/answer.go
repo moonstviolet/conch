@@ -3,6 +3,7 @@ package handlers
 import (
 	"conch/models"
 	"conch/proto"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -36,7 +37,7 @@ func NewAnswer(c *gin.Context) {
 		Qid:      question.Qid,
 		Uid:      user.Uid,
 		Username: user.Nickname,
-		Detail:   req.AnswerDetail,
+		Detail:   template.HTML(req.AnswerDetail),
 		Lastmod:  time.Now(),
 	}
 	_ = answer.Create()

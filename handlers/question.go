@@ -3,6 +3,7 @@ package handlers
 import (
 	"conch/models"
 	"conch/proto"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -30,7 +31,7 @@ func NewQuestion(c *gin.Context) {
 		Qid:      models.AutoIncrement("questions"),
 		Uid:      user.Uid,
 		Title:    req.QuestionTitle,
-		Detail:   req.QuestionDetail,
+		Detail:   template.HTML(req.QuestionDetail),
 		Follow:   1,
 		Pageview: 1,
 		Lastmod:  time.Now(),
@@ -56,11 +57,13 @@ func ReadQuestion(c *gin.Context) {
 	answers, _ := models.AnswersByQid(req.Qid)
 	var user models.User
 	cookie, err := c.Cookie("session")
+	log.Println(cookie)
 	if err == nil {
-		if session, err := models.CheckSession(cookie); err != nil {
+		if session, err := models.CheckSession(cookie); err == nil {
 			user = session.User()
 		}
 	}
+	log.Println(user)
 	c.HTML(http.StatusOK, "question-read.html", gin.H{
 		"LoginUser":  user,
 		"Question":   question,

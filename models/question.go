@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"errors"
+	"html/template"
 	"log"
 	"sort"
 	"time"
@@ -11,15 +12,15 @@ import (
 )
 
 type Question struct {
-	Qid      int       `json:"qid" bson:"_id"`
-	Uid      int       `json:"uid" bson:"uid"`
-	Title    string    `json:"title" bson:"title"`
-	Detail   string    `json:"detail" bson:"detail"`
-	ModUser  string    `json:"moduser" bson:"moduser"`
-	Modify   string    `json:"modify" bson:"modify"`
-	Follow   int       `json:"follow" bson:"follow"`
-	Pageview int       `json:"pageview" bson:"pageview"`
-	Lastmod  time.Time `json:"lastmod" bson:"lastmod"`
+	Qid      int           `json:"qid" bson:"_id"`
+	Uid      int           `json:"uid" bson:"uid"`
+	Title    string        `json:"title" bson:"title"`
+	Detail   template.HTML `json:"detail" bson:"detail"`
+	ModUser  string        `json:"moduser" bson:"moduser"`
+	Modify   template.HTML `json:"modify" bson:"modify"`
+	Follow   int           `json:"follow" bson:"follow"`
+	Pageview int           `json:"pageview" bson:"pageview"`
+	Lastmod  time.Time     `json:"lastmod" bson:"lastmod"`
 }
 
 type qList []Question

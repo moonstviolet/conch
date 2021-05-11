@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"errors"
+	"html/template"
 	"log"
 	"sort"
 	"time"
@@ -11,12 +12,12 @@ import (
 )
 
 type Answer struct {
-	Aid      int       `json:"aid" bson:"_id"`
-	Qid      int       `json:"qid" bson:"qid"`
-	Uid      int       `json:"uid" bson:"uid"`
-	Username string    `json:"username" bson:"username"`
-	Detail   string    `json:"detail" bson:"detail"`
-	Lastmod  time.Time `json:"lastmod" bson:"lastmod"`
+	Aid      int           `json:"aid" bson:"_id"`
+	Qid      int           `json:"qid" bson:"qid"`
+	Uid      int           `json:"uid" bson:"uid"`
+	Username string        `json:"username" bson:"username"`
+	Detail   template.HTML `json:"detail" bson:"detail"`
+	Lastmod  time.Time     `json:"lastmod" bson:"lastmod"`
 }
 
 type aList []Answer
