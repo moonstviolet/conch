@@ -78,7 +78,7 @@ func checkMethod(method interface{}) (mV reflect.Value, reqT, respT reflect.Type
 func CreateHandlerFunc(method interface{}) gin.HandlerFunc {
 	mV, reqT, respT, err := checkMethod(method)
 	if err != nil {
-		panic(err)
+		panic(any(err))
 	}
 
 	return func(c *gin.Context) {
